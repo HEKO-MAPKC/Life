@@ -2,10 +2,27 @@
 #include <vector>
 #include <stdlib.h>
 #include <math.h>
+#include <string>
+#include <string.h>
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
 using namespace std;
+
+int compare_mas(int** mas1, int** mas2, int n) {
+	int v=0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (mas1[i][j] == mas2[i][j]) {
+				v++;
+			}
+		}
+	}
+	if (v == pow(n, 2)) {
+		return 1;
+	}
+	return 0;
+}
 
 void out_mas(int** mas, int n) { //вывод массива
 	cout << endl;
@@ -28,18 +45,15 @@ int num_life(int** world, int n, int x, int y) {
 				}
 			}
 			if (num > 3) {
-				cout << 0 << endl;
 				return 0;
 			}
 		}
 	}
 
 	if (num < 2) {
-		cout << 0 << endl;
 		return 0;
 	}
 	else {
-		cout << num << endl;
 		return num;
 	}
 }
@@ -78,7 +92,7 @@ void copy_mas(int** mas1, int** mas2, int n) {
 	}
 }
 
-int proverka1(int** mas1, int n) {
+int check_null_world(int** mas1, int n) {
 	int v=0;
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
@@ -93,15 +107,35 @@ int proverka1(int** mas1, int n) {
 	}
 	return 0;
 }
+void get_coordinates(int** mas, string& coord,int n) {
+	coord = "";
 
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (mas[i][j]) {
+				coord += to_string(i) + to_string(j);
+				
+			}
+		}
+	}
+	
+	cout<<"coord: " << coord<<" "<<endl;
+}
 
 int main() {
 	//инициализация
-	int n = 5; //размер мира
+	int n = 5,day_num=1,coord_num=10; //размер мира
+	string* coord_world;
+	coord_world = new string [coord_num];
 	int** world;  //мир
 	world = new int* [n];
 	int** world_after; //мир после дня эволюции
 	world_after = new int* [n];
+	int** world_before;  //мир
+	world_before = new int* [n];
+	for (int i = 0; i < coord_num; i++) {
+		coord_world[i] = to_string(i);
+	}
 	for (int i = 0; i < n; i++) {
 		world[i] = new int[n];
 		world_after[i] = new int[n];
@@ -112,22 +146,34 @@ int main() {
 			world_after[i][j] = 0;
 		}
 	}
-	world[0][1] = 1;
-	world[1][0] = 1;
 	world[1][1] = 1;
+	world[1][2] = 1;
+	world[2][1] = 1;
 	world[2][2] = 1;
+	world[3][2] = 1;
 	world[3][3] = 1;
 	world[4][4] = 1;
 	world[4][1] = 1;
 	world[1][4] = 1;
+	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 	out_mas(world, n);
 	while (1) {
 		day(world, world_after, n);
+		day_num++;
 		_getch();
 		out_mas(world_after, n);
+		get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
+		for (int i = 0; i < coord_num; i++) {
+			cout << coord_world[i] << " " << endl;
+		}
+	
 		copy_mas(world, world_after, n);
 		null_mas(world_after, n);
-		if (proverka1(world, n)) break;
+		if (check_null_world(world, n)) { 
+			cout << "Check"<<endl;
+			
+			break;
+		}
 	}
 	return 0;
 }
