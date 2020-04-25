@@ -23,7 +23,16 @@ int compare_mas(int** mas1, int** mas2, int n) {
 	}
 	return 0;
 }
-
+int compare_coordinates(string* coordinates, int n) {
+	for (int i = 0; i < n-1; i++) {
+		for (int j = i+1; j < n; j++) {
+				if (coordinates[i]== coordinates[j]) {
+					return 1;
+			}
+		}
+	}
+	return 0;
+}
 void out_mas(int** mas, int n) { //вывод массива
 	cout << endl;
 	cout << endl;
@@ -166,7 +175,10 @@ int main() {
 		for (int i = 0; i < coord_num; i++) {
 			cout << coord_world[i] << " " << endl;
 		}
-	
+		if (compare_coordinates(coord_world, coord_num)) {
+			cout << "Compare_coord"<<endl;
+			break;
+		}
 		copy_mas(world, world_after, n);
 		null_mas(world_after, n);
 		if (check_null_world(world, n)) { 
