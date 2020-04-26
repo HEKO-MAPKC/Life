@@ -9,7 +9,7 @@
 #include <windows.h>
 #include <time.h>
 using namespace std;
-
+using namespace sf;
 int compare_mas(int** mas1, int** mas2, int n) {
 	int v = 0;
 	for (int i = 0; i < n; i++) {
@@ -131,7 +131,18 @@ void get_coordinates(int** mas, string& coord, int n) {
 }
 
 void Init_Graphics() {
-
+	RenderWindow window(VideoMode(1000, 1000), "Богиня благославляет этот ПК");
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+		window.clear();
+		window.display();
+	}
 }
 
 int main()
@@ -168,44 +179,25 @@ int main()
 	world[4][4] = 1;
 	world[4][1] = 1;
 	world[1][4] = 1;
+	Init_Graphics();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	out_mas(world, n);
+	//out_mas(world, n);
 	while (1) {
 		day(world, world_after, n);
 		day_num++;
 		_getch();
-		out_mas(world_after, n);
+		//out_mas(world_after, n);
 		get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 		if (compare_coordinates(coord_world, coord_num)) {
-			cout << "Compare_coord" << endl;
+			//cout << "Compare_coord" << endl;
 			break;
 		}
 		copy_mas(world, world_after, n);
 		null_mas(world_after, n);
 		if (check_null_world(world, n)) {
-			cout << "Check" << endl;
-
+			//cout << "Check" << endl;
 			break;
 		}
 	}
-
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-
     return 0;
 }
