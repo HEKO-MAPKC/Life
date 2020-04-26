@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
@@ -10,7 +11,7 @@
 using namespace std;
 
 int compare_mas(int** mas1, int** mas2, int n) {
-	int v=0;
+	int v = 0;
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			if (mas1[i][j] == mas2[i][j]) {
@@ -24,10 +25,10 @@ int compare_mas(int** mas1, int** mas2, int n) {
 	return 0;
 }
 int compare_coordinates(string* coordinates, int n) {
-	for (int i = 0; i < n-1; i++) {
-		for (int j = i+1; j < n; j++) {
-				if (coordinates[i]== coordinates[j]) {
-					return 1;
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = i + 1; j < n; j++) {
+			if (coordinates[i] == coordinates[j]) {
+				return 1;
 			}
 		}
 	}
@@ -102,7 +103,7 @@ void copy_mas(int** mas1, int** mas2, int n) {
 }
 
 int check_null_world(int** mas1, int n) {
-	int v=0;
+	int v = 0;
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			if (mas1[i][j] == 0) {
@@ -110,32 +111,35 @@ int check_null_world(int** mas1, int n) {
 			}
 		}
 	}
-	if (v == pow(n, 2)) { 
+	if (v == pow(n, 2)) {
 		cout << "FINISH" << endl;
 		return 1;
 	}
 	return 0;
 }
-void get_coordinates(int** mas, string& coord,int n) {
+void get_coordinates(int** mas, string& coord, int n) {
 	coord = "";
 
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			if (mas[i][j]) {
 				coord += to_string(i) + to_string(j);
-				
+
 			}
 		}
 	}
-	
-	cout<<"coord: " << coord<<" "<<endl;
 }
 
-int main() {
+void Init_Graphics() {
+
+}
+
+int main()
+{
 	//инициализация
-	int n = 5,day_num=1,coord_num=10; //размер мира
+	int n = 5, day_num = 1, coord_num = 10; //размер мира
 	string* coord_world;
-	coord_world = new string [coord_num];
+	coord_world = new string[coord_num];
 	int** world;  //мир
 	world = new int* [n];
 	int** world_after; //мир после дня эволюции
@@ -172,21 +176,36 @@ int main() {
 		_getch();
 		out_mas(world_after, n);
 		get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-		for (int i = 0; i < coord_num; i++) {
-			cout << coord_world[i] << " " << endl;
-		}
 		if (compare_coordinates(coord_world, coord_num)) {
-			cout << "Compare_coord"<<endl;
+			cout << "Compare_coord" << endl;
 			break;
 		}
 		copy_mas(world, world_after, n);
 		null_mas(world_after, n);
-		if (check_null_world(world, n)) { 
-			cout << "Check"<<endl;
-			
+		if (check_null_world(world, n)) {
+			cout << "Check" << endl;
+
 			break;
 		}
 	}
-	return 0;
-}
 
+    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        window.draw(shape);
+        window.display();
+    }
+
+    return 0;
+}
