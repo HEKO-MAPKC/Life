@@ -130,17 +130,31 @@ void get_coordinates(int** mas, string& coord, int n) {
 	}
 }
 
-void Init_Graphics() {
-	RenderWindow window(VideoMode(1000, 1000), "Богиня благославляет этот ПК");
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
+void init_sprites() {
+	
+}
+
+void init_window() {
+	Texture Goddess_t;
+	Goddess_t.loadFromFile("nep.png");
+	Texture fon_t;
+	fon_t.loadFromFile("fon.png");
+	Sprite fon;
+	fon.setTexture(fon_t);
+	fon.setPosition(0, 0);
+	Sprite Goddess;
+	Goddess.setTexture(Goddess_t);
+	Goddess.setPosition(0, 100);
+	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
+	while (window.isOpen()) {
+		Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == Event::Closed)
 				window.close();
 		}
-		window.clear();
+		window.clear(Color::White);
+		window.draw(fon);
+		window.draw(Goddess);
 		window.display();
 	}
 }
@@ -179,7 +193,8 @@ int main()
 	world[4][4] = 1;
 	world[4][1] = 1;
 	world[1][4] = 1;
-	Init_Graphics();
+	init_sprites();
+	init_window();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 	//out_mas(world, n);
 	while (1) {
