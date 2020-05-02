@@ -1,8 +1,0 @@
-﻿  Goddess_bless.cpp
-d:\life\goddess_bless\goddess_bless.cpp(210): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-d:\life\goddess_bless\goddess_bless.cpp(219): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-  Goddess_bless.vcxproj -> D:\Life\Goddess_bless\Debug\Goddess_bless.exe
