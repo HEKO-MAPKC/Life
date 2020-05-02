@@ -134,7 +134,8 @@ void init_sprites() {
 	
 }
 
-void init_window() {
+void init_window(int** world, int n) {
+	int startX=700, startY=50;
 	Texture Goddess_t;
 	Goddess_t.loadFromFile("nep.png");
 	Texture fon_t;
@@ -155,6 +156,19 @@ void init_window() {
 		window.clear(Color::White);
 		window.draw(fon);
 		window.draw(Goddess);
+		RectangleShape rectangle(Vector2f(20, 20));
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (world[i][j] == 0) {
+					rectangle.setFillColor(Color::Black);
+				}
+				if (world[i][j] == 1) {
+					rectangle.setFillColor(Color::Green);
+				}
+				rectangle.setPosition(j * 20+ startX, i * 20+ startY);
+				window.draw(rectangle);
+			}
+		}
 		window.display();
 	}
 }
@@ -162,7 +176,7 @@ void init_window() {
 int main()
 {
 	//инициализация
-	int n = 5, day_num = 1, coord_num = 10; //размер мира
+	int n = 40, day_num = 1, coord_num = 10; //размер мира
 	string* coord_world;
 	coord_world = new string[coord_num];
 	int** world;  //мир
@@ -194,7 +208,7 @@ int main()
 	world[4][1] = 1;
 	world[1][4] = 1;
 	init_sprites();
-	init_window();
+	init_window(world, n);
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 	//out_mas(world, n);
 	while (1) {
