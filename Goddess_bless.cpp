@@ -130,64 +130,27 @@ void get_coordinates(int** mas, string& coord, int n) {
 	}
 }
 
+void null_compare_coord(string* coordinates, int n) {
+	for (int i = 0; i < n; i++) {
+		coordinates[i] = to_string(i);
+	}
+}
+
 void init_sprites() {
 	
 }
 
-void init_window(int** world, int n) {
-	int startX=700, startY=50;
-	Texture Goddess_t;
-	Goddess_t.loadFromFile("nep.png");
-	Texture fon_t;
-	fon_t.loadFromFile("fon.png");
-	Sprite fon;
-	fon.setTexture(fon_t);
-	fon.setPosition(0, 0);
-	Sprite Goddess;
-	Goddess.setTexture(Goddess_t);
-	Goddess.setPosition(0, 100);
-	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
-	while (window.isOpen()) {
-		Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == Event::Closed)
-				window.close();
-		}
-		window.clear(Color::White);
-		window.draw(fon);
-		window.draw(Goddess);
-		RectangleShape rectangle(Vector2f(20, 20));
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (world[i][j] == 0) {
-					rectangle.setFillColor(Color::Black);
-				}
-				if (world[i][j] == 1) {
-					rectangle.setFillColor(Color::Green);
-				}
-				rectangle.setPosition(j * 20+ startX, i * 20+ startY);
-				window.draw(rectangle);
-			}
-		}
-		window.display();
-	}
-}
-
-int main()
-{
-	//инициализация
+void init_game() {
+	bool world_started=0;
 	int n = 40, day_num = 1, coord_num = 10; //размер мира
+	int delay_t=100;
 	string* coord_world;
 	coord_world = new string[coord_num];
 	int** world;  //мир
 	world = new int* [n];
 	int** world_after; //мир после дня эволюции
 	world_after = new int* [n];
-	int** world_before;  //мир
-	world_before = new int* [n];
-	for (int i = 0; i < coord_num; i++) {
-		coord_world[i] = to_string(i);
-	}
+	null_compare_coord(coord_world, coord_num);
 	for (int i = 0; i < n; i++) {
 		world[i] = new int[n];
 		world_after[i] = new int[n];
@@ -208,25 +171,80 @@ int main()
 	world[4][1] = 1;
 	world[1][4] = 1;
 	init_sprites();
-	init_window(world, n);
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	//out_mas(world, n);
-	while (1) {
-		day(world, world_after, n);
-		day_num++;
-		_getch();
-		//out_mas(world_after, n);
-		get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-		if (compare_coordinates(coord_world, coord_num)) {
-			//cout << "Compare_coord" << endl;
-			break;
+	int startX=700, startY=50, tilesize=20;
+	int pos_j, pos_i;
+	Texture Goddess_t;
+	Goddess_t.loadFromFile("nep.png");
+	Texture fon_t;
+	fon_t.loadFromFile("fon.png");
+	Sprite fon;
+	fon.setTexture(fon_t);
+	fon.setPosition(0, 0);
+	Sprite Goddess;
+	Goddess.setTexture(Goddess_t);
+	Goddess.setPosition(0, 100);
+	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
+	window.clear(Color::White);
+	while (window.isOpen()) {
+		Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == Event::Closed)
+				window.close();
+			if (event.type == Event::MouseButtonPressed) {
+				Vector2i pixelPos = Mouse::getPosition(window);//забираем коорд курсора
+				pos_j = (pixelPos.x - startX) / tilesize;
+				pos_i = (pixelPos.y - startY) / tilesize;
+				world[pos_i][pos_j]=1;
+				cout << "Choosing" << endl;
+			}
+			if (event.type == Event::KeyPressed) {
+				if (!world_started) world_started = 1;
+				cout << "Key pressed" << endl;
+				//else world_started = 0;
+			}
+
 		}
-		copy_mas(world, world_after, n);
-		null_mas(world_after, n);
-		if (check_null_world(world, n)) {
-			//cout << "Check" << endl;
-			break;
+		window.draw(fon);
+		window.draw(Goddess);
+		RectangleShape rectangle(Vector2f(tilesize, tilesize));
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (world[i][j] == 0) {
+					rectangle.setFillColor(Color::Black);
+				}
+				if (world[i][j] == 1) {
+					rectangle.setFillColor(Color::Green);
+				}
+				rectangle.setPosition(j * tilesize + startX, i * tilesize + startY);
+				window.draw(rectangle);
+			}
+		}
+		window.display();
+		if (world_started) {
+			day(world, world_after, n);
+			day_num++;
+			get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
+			if (compare_coordinates(coord_world, coord_num)) {
+				cout << "Compare_coord" << endl;
+				world_started = 0;
+				null_compare_coord(coord_world, coord_num);
+				get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
+			}
+			copy_mas(world, world_after, n);
+			null_mas(world_after, n);
+			if (check_null_world(world, n)) {
+			    cout << "Null" << endl;
+				world_started = 0;
+			}
+			Sleep(delay_t);
 		}
 	}
+}
+
+int main()
+{
+	//инициализация
+	init_game();
     return 0;
 }
