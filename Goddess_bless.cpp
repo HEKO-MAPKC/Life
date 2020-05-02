@@ -10,6 +10,14 @@
 #include <time.h>
 using namespace std;
 using namespace sf;
+
+void rand_mas(int** mas, int n) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			mas[i][j] = rand() % 2;
+		}
+	}
+}
 int compare_mas(int** mas1, int** mas2, int n) {
 	int v = 0;
 	for (int i = 0; i < n; i++) {
@@ -142,7 +150,7 @@ void init_sprites() {
 
 void init_game() {
 	bool world_started=0;
-	int n = 40, day_num = 1, coord_num = 10; //размер мира
+	int n = 100, day_num = 1, coord_num = 10;
 	int delay_t=100;
 	string* coord_world;
 	coord_world = new string[coord_num];
@@ -161,18 +169,10 @@ void init_game() {
 			world_after[i][j] = 0;
 		}
 	}
-	world[1][1] = 1;
-	world[1][2] = 1;
-	world[2][1] = 1;
-	world[2][2] = 1;
-	world[3][2] = 1;
-	world[3][3] = 1;
-	world[4][4] = 1;
-	world[4][1] = 1;
-	world[1][4] = 1;
+	rand_mas(world, n);
 	init_sprites();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	int startX=700, startY=50, tilesize=20;
+	int startX=700, startY=50, tilesize=8;
 	int pos_j, pos_i;
 	Texture Goddess_t;
 	Goddess_t.loadFromFile("nep.png");
