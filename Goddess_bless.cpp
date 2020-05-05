@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+п»ї#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
@@ -42,7 +42,7 @@ int compare_coordinates(string* coordinates, int n) {
 	}
 	return 0;
 }
-void out_mas(int** mas, int n) { //вывод массива
+void out_mas(int** mas, int n) { //ГўГ»ГўГ®Г¤ Г¬Г Г±Г±ГЁГўГ 
 	cout << endl;
 	cout << endl;
 	for (int i = 0; i < n; i++) {
@@ -76,7 +76,7 @@ int num_life(int** world, int n, int x, int y) {
 	}
 }
 
-void day(int** world, int** world_after, int n) { //один день эволюции
+void day(int** world, int** world_after, int n) { //Г®Г¤ГЁГ­ Г¤ГҐГ­Гј ГЅГўГ®Г«ГѕГ¶ГЁГЁ
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			if (world[i][j] == 0) {
@@ -145,18 +145,19 @@ void null_compare_coord(string* coordinates, int n) {
 }
 
 void init_sprites() {
-	
+
 }
 
 void init_game() {
-	bool world_started=0;
+	bool isMove = false;
+	bool world_started = 0;
 	int n = 100, day_num = 1, coord_num = 10;
-	int delay_t=100;
+	int delay_t = 100;
 	string* coord_world;
 	coord_world = new string[coord_num];
-	int** world;  //мир
+	int** world;  //Г¬ГЁГ°
 	world = new int* [n];
-	int** world_after; //мир после дня эволюции
+	int** world_after; //Г¬ГЁГ° ГЇГ®Г±Г«ГҐ Г¤Г­Гї ГЅГўГ®Г«ГѕГ¶ГЁГЁ
 	world_after = new int* [n];
 	null_compare_coord(coord_world, coord_num);
 	for (int i = 0; i < n; i++) {
@@ -169,10 +170,10 @@ void init_game() {
 			world_after[i][j] = 0;
 		}
 	}
-	rand_mas(world, n);
+
 	init_sprites();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	int startX=700, startY=50, tilesize=8;
+	int startX = 700, startY = 50, tilesize = 8;
 	int pos_j, pos_i;
 	Texture Goddess_t;
 	Goddess_t.loadFromFile("nep.png");
@@ -186,28 +187,47 @@ void init_game() {
 	Goddess.setPosition(0, 100);
 	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
 	window.clear(Color::White);
+	RectangleShape rectangle(Vector2f(tilesize, tilesize));
 	while (window.isOpen()) {
 		Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				window.close();
 			if (event.type == Event::MouseButtonPressed) {
-				Vector2i pixelPos = Mouse::getPosition(window);//забираем коорд курсора
+				if (Mouse::getPosition(window).x >= startX && sf::Mouse::getPosition(window).y >= startY && sf::Mouse::getPosition(window).y <= ((n - 1) * tilesize + startY) && sf::Mouse::getPosition(window).x <= ((n - 1) * tilesize + startX))
+					if (event.key.code == Mouse::Left) {
+						isMove = true;
+					}
+			}
+			if (event.type == Event::MouseButtonReleased)
+				if (event.key.code == Mouse::Left)
+					isMove = false;
+			if (isMove)
+			{
+				Vector2i pixelPos = Mouse::getPosition(window);
 				pos_j = (pixelPos.x - startX) / tilesize;
 				pos_i = (pixelPos.y - startY) / tilesize;
-				world[pos_i][pos_j]=1;
+				world[pos_i][pos_j] = 1;
 				cout << "Choosing" << endl;
 			}
-			if (event.type == Event::KeyPressed) {
+			if (Keyboard::isKeyPressed(Keyboard::S)) {
+				world_started = 0;
+			}
+			if (Keyboard::isKeyPressed(Keyboard::Enter)) {
 				if (!world_started) world_started = 1;
 				cout << "Key pressed" << endl;
 				//else world_started = 0;
 			}
 
+			if (Keyboard::isKeyPressed(Keyboard::Space)) {
+				rand_mas(world, n);
+				cout << "Key pressed SPACE" << endl;
+			}
+
+
 		}
 		window.draw(fon);
 		window.draw(Goddess);
-		RectangleShape rectangle(Vector2f(tilesize, tilesize));
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				if (world[i][j] == 0) {
@@ -234,7 +254,7 @@ void init_game() {
 			copy_mas(world, world_after, n);
 			null_mas(world_after, n);
 			if (check_null_world(world, n)) {
-			    cout << "Null" << endl;
+				cout << "Null" << endl;
 				world_started = 0;
 			}
 			Sleep(delay_t);
@@ -244,7 +264,7 @@ void init_game() {
 
 int main()
 {
-	//инициализация
+
 	init_game();
-    return 0;
+	return 0;
 }

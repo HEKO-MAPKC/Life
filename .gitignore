@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Goddess_bless.sln
 Goddess_bless.vcxproj.user
 Goddess_bless.vcxproj
@@ -10,9 +9,9 @@ Goddess_bless.vcxproj.filters
 /x64/
 Debug/
 x64/
+Debug
+x64
 packages.config
 packages
-=======
-Debug
-.vs
->>>>>>> 5db2395d8df5b7fc5005daf4af47eb515b42fb2a
+
+
