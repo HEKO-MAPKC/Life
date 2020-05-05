@@ -42,7 +42,7 @@ int compare_coordinates(string* coordinates, int n) {
 	}
 	return 0;
 }
-void out_mas(int** mas, int n) { //âûâîä ìàññèâà
+void out_mas(int** mas, int n) { 
 	cout << endl;
 	cout << endl;
 	for (int i = 0; i < n; i++) {
@@ -76,7 +76,7 @@ int num_life(int** world, int n, int x, int y) {
 	}
 }
 
-void day(int** world, int** world_after, int n) { //îäèí äåíü ýâîëþöèè
+void day(int** world, int** world_after, int n) { 
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			if (world[i][j] == 0) {
@@ -151,13 +151,13 @@ void init_sprites() {
 void init_game() {
 	bool isMove = false;
 	bool world_started = 0;
-	int n = 100, day_num = 1, coord_num = 10;
-	int delay_t = 100;
+	int n = 200, day_num = 1, coord_num = 10;
+	int delay_t = 0;
 	string* coord_world;
 	coord_world = new string[coord_num];
-	int** world;  //ìèð
+	int** world; 
 	world = new int* [n];
-	int** world_after; //ìèð ïîñëå äíÿ ýâîëþöèè
+	int** world_after; 
 	world_after = new int* [n];
 	null_compare_coord(coord_world, coord_num);
 	for (int i = 0; i < n; i++) {
@@ -173,7 +173,7 @@ void init_game() {
 
 	init_sprites();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	int startX = 700, startY = 50, tilesize = 8;
+	int startX = 700, startY = 50, tilesize = 4;
 	int pos_j, pos_i;
 	Texture Goddess_t;
 	Goddess_t.loadFromFile("nep.png");
@@ -199,6 +199,16 @@ void init_game() {
 						isMove = true;
 					}
 			}
+
+			if (event.type == Event::MouseButtonPressed) {
+				if (Mouse::getPosition(window).x >= startX && sf::Mouse::getPosition(window).y >= startY && sf::Mouse::getPosition(window).y <= ((n - 1) * tilesize + startY) && sf::Mouse::getPosition(window).x <= ((n - 1) * tilesize + startX))
+					if (event.key.code == Mouse::Right) {
+						Vector2i pixelPos = Mouse::getPosition(window);
+						pos_j = (pixelPos.x - startX) / tilesize;
+						pos_i = (pixelPos.y - startY) / tilesize;
+						world[pos_i][pos_j] = 0;
+					}
+			}
 			if (event.type == Event::MouseButtonReleased)
 				if (event.key.code == Mouse::Left)
 					isMove = false;
@@ -208,6 +218,12 @@ void init_game() {
 				pos_j = (pixelPos.x - startX) / tilesize;
 				pos_i = (pixelPos.y - startY) / tilesize;
 				world[pos_i][pos_j] = 1;
+				/*if (world[pos_i][pos_j]) {
+					world[pos_i][pos_j] = 0;
+				}
+				else if (world[pos_i][pos_j]==0) {
+					world[pos_i][pos_j] = 1;
+				}*/
 				cout << "Choosing" << endl;
 			}
 			if (Keyboard::isKeyPressed(Keyboard::S)) {
@@ -217,6 +233,9 @@ void init_game() {
 				if (!world_started) world_started = 1;
 				cout << "Key pressed" << endl;
 				//else world_started = 0;
+			}
+			if (Keyboard::isKeyPressed(Keyboard::R)) {
+				null_mas(world, n);
 			}
 
 			if (Keyboard::isKeyPressed(Keyboard::Space)) {
