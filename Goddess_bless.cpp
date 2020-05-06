@@ -1,4 +1,5 @@
 ﻿#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
@@ -171,6 +172,11 @@ void init_game() {
 	int pos_j, pos_i;
 	int num_scene = 1;
 	float CurrentFrame = 0;
+	Music music;
+	music.openFromFile("ost.ogg");
+	music.play();
+	music.setLoop(true);
+	music.setVolume(10.f);
 	Texture Goddess_t;
 	Goddess_t.loadFromFile("nep.png");
 	Texture fon_t;
