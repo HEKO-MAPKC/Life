@@ -183,8 +183,6 @@ void init_game() {
 	fon_t.loadFromFile("fon.png");
 	Texture planet_t;
 	planet_t.loadFromFile("planet.png");
-	Texture life_t;
-	life_t.loadFromFile("life.bmp");
 	Texture box_t;
 	box_t.loadFromFile("box.png");
 	Font font;
@@ -193,6 +191,7 @@ void init_game() {
 	Text text2("", font, 30);
 	Text text3("", font, 30);
 	Text text4("", font, 30);
+	Text textsp("", font, 30);
 //	text.setColor(Color::White);
 	//text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 	Sprite life;
@@ -225,7 +224,6 @@ void init_game() {
 			if (world[i][j] == 1) {
 				rectangle_life.setFillColor(Color::Green);
 				rectangle_life.setPosition(j * tilesize + startX, i * tilesize + startY);
-				rectangle_life.setTexture(&life_t);
 				window.draw(rectangle_life);
 			}
 		}
@@ -343,18 +341,21 @@ void init_game() {
 			}
 			window.draw(Goddess);
 			window.draw(box);
-			text1.setString(L"Sugoi, Михаил, тебе проект сдавать");
+			text1.setString(L"Господи, Михаил, ты такой умный");
 			text1.setPosition(88, 660);
 			window.draw(text1);
-			text2.setString(L"в понедельник, ты такой ерундой");
+			text2.setString(L"программист, а я как ты знаешь");
 			text2.setPosition(88, 660+45);
 			window.draw(text2);
-			text3.setString(L"маешься, десу-ня");
+			text3.setString(L"люблю всякую технику...");
 			text3.setPosition(88, 660 + 45*2);
 			window.draw(text3);
-			text4.setString(L"Непгир");
-			text4.setPosition(105, 560);
+			text4.setString(L"не хочешь ПЕРЕСПАТЬ СО МНОЙ <3");
+			text4.setPosition(88, 660 + 45 * 3);
 			window.draw(text4);
+			textsp.setString(L"Непгир");
+			textsp.setPosition(105, 560);
+			window.draw(textsp);
 			window.display();
 		break;
 		case 2:
