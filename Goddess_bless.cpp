@@ -151,7 +151,7 @@ void init_sprites() {
 void init_game() {
 	bool isMove = false;
 	bool world_started = 0;
-	int n = 50, day_num = 1, coord_num = 10;
+	int n = 100, day_num = 1, coord_num = 10;
 	int delay_t = 0;
 	string* coord_world;
 	coord_world = new string[coord_num];
@@ -172,15 +172,19 @@ void init_game() {
 	}
 	init_sprites();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	int startX = 700, startY = 50, tilesize = 16;
+	int startX = 700, startY = 50, tilesize = 8;
 	int pos_j, pos_i;
 	int num_scene = 1;
+	float CurrentFrame = 0;
 	Texture Goddess_t;
-	Goddess_t.loadFromFile("nep.png");
+	Goddess_t.loadFromFile("nep6.png");
 	Texture fon_t;
 	fon_t.loadFromFile("fon.png");
 	Texture planet_t;
 	planet_t.loadFromFile("planet.png");
+	Texture life_t;
+	life_t.loadFromFile("life.bmp");
+	Sprite life;
 	Sprite fon;
 	fon.setTexture(fon_t);
 	fon.setPosition(0, 0);
@@ -189,6 +193,7 @@ void init_game() {
 	planet.setPosition(startX-182, startY-185);
 	Sprite Goddess;
 	Goddess.setTexture(Goddess_t);
+	Goddess.setTextureRect(IntRect(0, 0, 522, 800));
 	Goddess.setPosition(0, 100);
 	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
 	window.clear(Color::White);
@@ -206,6 +211,7 @@ void init_game() {
 			if (world[i][j] == 1) {
 				rectangle_life.setFillColor(Color::Green);
 				rectangle_life.setPosition(j * tilesize + startX, i * tilesize + startY);
+				rectangle_life.setTexture(&life_t);
 				window.draw(rectangle_life);
 			}
 		}
@@ -241,6 +247,7 @@ void init_game() {
 					pos_j = (pixelPos.x - startX) / tilesize;
 					pos_i = (pixelPos.y - startY) / tilesize;
 					world[pos_i][pos_j] = 1;
+					Goddess.setTextureRect(IntRect(522 * 0, 0, 522, 800));
 					/*if (world[pos_i][pos_j]) {
 						world[pos_i][pos_j] = 0;
 					}
@@ -255,6 +262,7 @@ void init_game() {
 					}
 					if (event.key.code == Keyboard::Enter) {
 						if (!world_started) world_started = 1;
+						Goddess.setTextureRect(IntRect(522 * 0, 0, 522, 800));
 						cout << "Key pressed" << endl;
 						//else world_started = 0;
 					}
@@ -269,7 +277,6 @@ void init_game() {
 			}
 			window.draw(fon);
 			window.draw(planet);
-			window.draw(Goddess);
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
 					/*if (world[i][j] == 0) {
@@ -281,8 +288,9 @@ void init_game() {
 					}*/
 					rectangle_life.setPosition(j * tilesize + startX, i * tilesize + startY);
 					if (world[i][j] == 1) {
-						rectangle_life.setFillColor(Color::Green);
-						//rectangle.setTextureRect();
+						rectangle_life.setFillColor(Color(173, 255, 47));
+						//rectangle.setTexture(life_t);
+						//rectangle_life.setTexture(&life_t);
 					}
 					else {
 						rectangle_life.setFillColor(Color::Transparent);
@@ -293,25 +301,34 @@ void init_game() {
 				}
 			}
 			window.draw(rectangle);
-			window.display();
 			if (world_started) {
 				day(world, world_after, n);
+				if (day_num <= 30) {
+					Goddess.setTextureRect(IntRect(522*0, 0, 522, 800));
+				}
+				if (day_num > 100) {
+					Goddess.setTextureRect(IntRect(522 * 2, 0, 522, 800));
+				}
 				day_num++;
 				get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 				if (compare_coordinates(coord_world, coord_num)) {
 					cout << "Compare_coord" << endl;
+					Goddess.setTextureRect(IntRect(522 * 3, 0, 522, 800));
+					day_num = 0;
 					world_started = 0;
 					null_compare_coord(coord_world, coord_num);
 					get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 				}
 				copy_mas(world, world_after, n);
 				null_mas(world_after, n);
-				if (check_null_world(world, n)) {
+				/*if (check_null_world(world, n)) {
 					cout << "Null" << endl;
 					world_started = 0;
-				}
+				}*/
 				//Sleep(delay_t);
 			}
+			window.draw(Goddess);
+			window.display();
 		break;
 		case 2:
 
