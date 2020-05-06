@@ -151,7 +151,7 @@ void init_sprites() {
 void init_game() {
 	bool isMove = false;
 	bool world_started = 0;
-	int n = 200, day_num = 1, coord_num = 10;
+	int n = 50, day_num = 1, coord_num = 10;
 	int delay_t = 0;
 	string* coord_world;
 	coord_world = new string[coord_num];
@@ -172,7 +172,7 @@ void init_game() {
 	}
 	init_sprites();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	int startX = 700, startY = 50, tilesize = 4;
+	int startX = 700, startY = 50, tilesize = 16;
 	int pos_j, pos_i;
 	int num_scene = 1;
 	Texture Goddess_t;
@@ -193,6 +193,23 @@ void init_game() {
 	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
 	window.clear(Color::White);
 	RectangleShape rectangle(Vector2f(tilesize, tilesize));
+	RectangleShape rectangle_life(Vector2f(tilesize, tilesize));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (world[i][j] == 0) {
+				rectangle.setFillColor(Color::Transparent);
+				rectangle.setOutlineColor(Color::Black);
+				rectangle.setOutlineThickness(1);
+				rectangle.setPosition(j * tilesize + startX, i * tilesize + startY);
+				window.draw(rectangle);
+			}
+			if (world[i][j] == 1) {
+				rectangle_life.setFillColor(Color::Green);
+				rectangle_life.setPosition(j * tilesize + startX, i * tilesize + startY);
+				window.draw(rectangle_life);
+			}
+		}
+	}
 	while (window.isOpen()) {
 		switch (num_scene) {
 		case 1:
@@ -255,16 +272,27 @@ void init_game() {
 			window.draw(Goddess);
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
-					if (world[i][j] == 0) {
-						rectangle.setFillColor(Color::Black);
-					}
+					/*if (world[i][j] == 0) {
+						rectangle.setFillColor(Color::Transparent);
+						rectangle.setOutlineColor(Color::Black);
+						rectangle.setOutlineThickness(1);
+					
+						window.draw(rectangle);
+					}*/
+					rectangle_life.setPosition(j * tilesize + startX, i * tilesize + startY);
 					if (world[i][j] == 1) {
-						rectangle.setFillColor(Color::Green);
+						rectangle_life.setFillColor(Color::Green);
+						//rectangle.setTextureRect();
 					}
-					rectangle.setPosition(j * tilesize + startX, i * tilesize + startY);
+					else {
+						rectangle_life.setFillColor(Color::Transparent);
+						rectangle.setPosition(j * tilesize + startX, i * tilesize + startY);
+					}
+					window.draw(rectangle_life);
 					window.draw(rectangle);
 				}
 			}
+			window.draw(rectangle);
 			window.display();
 			if (world_started) {
 				day(world, world_after, n);
@@ -282,7 +310,7 @@ void init_game() {
 					cout << "Null" << endl;
 					world_started = 0;
 				}
-				Sleep(delay_t);
+				//Sleep(delay_t);
 			}
 		break;
 		case 2:
