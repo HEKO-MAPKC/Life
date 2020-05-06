@@ -144,10 +144,6 @@ void null_compare_coord(string* coordinates, int n) {
 	}
 }
 
-void init_sprites() {
-
-}
-
 void init_game() {
 	bool isMove = false;
 	bool world_started = 0;
@@ -170,20 +166,29 @@ void init_game() {
 			world_after[i][j] = 0;
 		}
 	}
-	init_sprites();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 	int startX = 700, startY = 50, tilesize = 8;
 	int pos_j, pos_i;
 	int num_scene = 1;
 	float CurrentFrame = 0;
 	Texture Goddess_t;
-	Goddess_t.loadFromFile("nep6.png");
+	Goddess_t.loadFromFile("nep.png");
 	Texture fon_t;
 	fon_t.loadFromFile("fon.png");
 	Texture planet_t;
 	planet_t.loadFromFile("planet.png");
 	Texture life_t;
 	life_t.loadFromFile("life.bmp");
+	Texture box_t;
+	box_t.loadFromFile("box.png");
+	Font font;
+	font.loadFromFile("font.ttf");
+	Text text1("", font, 30);
+	Text text2("", font, 30);
+	Text text3("", font, 30);
+	Text text4("", font, 30);
+//	text.setColor(Color::White);
+	//text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 	Sprite life;
 	Sprite fon;
 	fon.setTexture(fon_t);
@@ -193,8 +198,11 @@ void init_game() {
 	planet.setPosition(startX-182, startY-185);
 	Sprite Goddess;
 	Goddess.setTexture(Goddess_t);
-	Goddess.setTextureRect(IntRect(0, 0, 522, 800));
+	Goddess.setTextureRect(IntRect(522 * 1, 0, 522, 800));
 	Goddess.setPosition(0, 100);
+	Sprite box;
+	box.setTexture(box_t);
+	box.setPosition(10, 410);
 	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
 	window.clear(Color::White);
 	RectangleShape rectangle(Vector2f(tilesize, tilesize));
@@ -328,6 +336,19 @@ void init_game() {
 				//Sleep(delay_t);
 			}
 			window.draw(Goddess);
+			window.draw(box);
+			text1.setString(L"Sugoi, Михаил, тебе проект сдавать");
+			text1.setPosition(88, 660);
+			window.draw(text1);
+			text2.setString(L"в понедельник, ты такой ерундой");
+			text2.setPosition(88, 660+45);
+			window.draw(text2);
+			text3.setString(L"маешься, десу-ня");
+			text3.setPosition(88, 660 + 45*2);
+			window.draw(text3);
+			text4.setString(L"Непгир");
+			text4.setPosition(105, 560);
+			window.draw(text4);
 			window.display();
 		break;
 		case 2:
@@ -339,7 +360,7 @@ void init_game() {
 
 int main()
 {
+	setlocale(LC_ALL, "Russian");
 	init_game();
-
 	return 0;
 }
