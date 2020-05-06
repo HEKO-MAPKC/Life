@@ -170,18 +170,23 @@ void init_game() {
 			world_after[i][j] = 0;
 		}
 	}
-
 	init_sprites();
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 	int startX = 700, startY = 50, tilesize = 4;
 	int pos_j, pos_i;
+	int num_scene = 1;
 	Texture Goddess_t;
 	Goddess_t.loadFromFile("nep.png");
 	Texture fon_t;
 	fon_t.loadFromFile("fon.png");
+	Texture planet_t;
+	planet_t.loadFromFile("planet.png");
 	Sprite fon;
 	fon.setTexture(fon_t);
 	fon.setPosition(0, 0);
+	Sprite planet;
+	planet.setTexture(planet_t);
+	planet.setPosition(startX-182, startY-185);
 	Sprite Goddess;
 	Goddess.setTexture(Goddess_t);
 	Goddess.setPosition(0, 100);
@@ -189,101 +194,107 @@ void init_game() {
 	window.clear(Color::White);
 	RectangleShape rectangle(Vector2f(tilesize, tilesize));
 	while (window.isOpen()) {
-		Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == Event::Closed)
-				window.close();
-			if (event.type == Event::MouseButtonPressed) {
-				if (Mouse::getPosition(window).x >= startX && sf::Mouse::getPosition(window).y >= startY && sf::Mouse::getPosition(window).y <= ((n - 1) * tilesize + startY) && sf::Mouse::getPosition(window).x <= ((n - 1) * tilesize + startX))
-					if (event.key.code == Mouse::Left) {
-						isMove = true;
-					}
-			}
-
-			if (event.type == Event::MouseButtonPressed) {
-				if (Mouse::getPosition(window).x >= startX && sf::Mouse::getPosition(window).y >= startY && sf::Mouse::getPosition(window).y <= ((n - 1) * tilesize + startY) && sf::Mouse::getPosition(window).x <= ((n - 1) * tilesize + startX))
-					if (event.key.code == Mouse::Right) {
-						Vector2i pixelPos = Mouse::getPosition(window);
-						pos_j = (pixelPos.x - startX) / tilesize;
-						pos_i = (pixelPos.y - startY) / tilesize;
+		switch (num_scene) {
+		case 1:
+			Event event;
+			while (window.pollEvent(event)) {
+				if (event.type == Event::Closed)
+					window.close();
+				if (event.type == Event::MouseButtonPressed) {
+					if (Mouse::getPosition(window).x >= startX && sf::Mouse::getPosition(window).y >= startY && sf::Mouse::getPosition(window).y <= ((n - 1) * tilesize + startY) && sf::Mouse::getPosition(window).x <= ((n - 1) * tilesize + startX))
+						if (event.key.code == Mouse::Left) {
+							isMove = true;
+						}
+				}
+				if (event.type == Event::MouseButtonPressed) {
+					if (Mouse::getPosition(window).x >= startX && sf::Mouse::getPosition(window).y >= startY && sf::Mouse::getPosition(window).y <= ((n - 1) * tilesize + startY) && sf::Mouse::getPosition(window).x <= ((n - 1) * tilesize + startX))
+						if (event.key.code == Mouse::Right) {
+							Vector2i pixelPos = Mouse::getPosition(window);
+							pos_j = (pixelPos.x - startX) / tilesize;
+							pos_i = (pixelPos.y - startY) / tilesize;
+							world[pos_i][pos_j] = 0;
+						}
+				}
+				if (event.type == Event::MouseButtonReleased)
+					if (event.key.code == Mouse::Left)
+						isMove = false;
+				if (isMove)
+				{
+					Vector2i pixelPos = Mouse::getPosition(window);
+					pos_j = (pixelPos.x - startX) / tilesize;
+					pos_i = (pixelPos.y - startY) / tilesize;
+					world[pos_i][pos_j] = 1;
+					/*if (world[pos_i][pos_j]) {
 						world[pos_i][pos_j] = 0;
 					}
-			}
-			if (event.type == Event::MouseButtonReleased)
-				if (event.key.code == Mouse::Left)
-					isMove = false;
-			if (isMove)
-			{
-				Vector2i pixelPos = Mouse::getPosition(window);
-				pos_j = (pixelPos.x - startX) / tilesize;
-				pos_i = (pixelPos.y - startY) / tilesize;
-				world[pos_i][pos_j] = 1;
-				/*if (world[pos_i][pos_j]) {
-					world[pos_i][pos_j] = 0;
+					else if (world[pos_i][pos_j]==0) {
+						world[pos_i][pos_j] = 1;
+					}*/
+					cout << "Choosing" << endl;
 				}
-				else if (world[pos_i][pos_j]==0) {
-					world[pos_i][pos_j] = 1;
-				}*/
-				cout << "Choosing" << endl;
-			}
-			if (Keyboard::isKeyPressed(Keyboard::S)) {
-				world_started = 0;
-			}
-			if (Keyboard::isKeyPressed(Keyboard::Enter)) {
-				if (!world_started) world_started = 1;
-				cout << "Key pressed" << endl;
-				//else world_started = 0;
-			}
-			if (Keyboard::isKeyPressed(Keyboard::R)) {
-				null_mas(world, n);
-			}
-
-			if (Keyboard::isKeyPressed(Keyboard::Space)) {
-				rand_mas(world, n);
-				cout << "Key pressed SPACE" << endl;
-			}
-
-
-		}
-		window.draw(fon);
-		window.draw(Goddess);
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (world[i][j] == 0) {
-					rectangle.setFillColor(Color::Black);
+				if (event.type == Event:: KeyPressed) {
+					if (event.key.code == Keyboard::S) {
+						world_started = 0;
+					}
+					if (event.key.code == Keyboard::Enter) {
+						if (!world_started) world_started = 1;
+						cout << "Key pressed" << endl;
+						//else world_started = 0;
+					}
+					if (event.key.code == Keyboard::R) {
+						null_mas(world, n);
+					}
+					if (event.key.code == Keyboard::Space) {
+						rand_mas(world, n);
+						cout << "Key pressed SPACE" << endl;
+					}
 				}
-				if (world[i][j] == 1) {
-					rectangle.setFillColor(Color::Green);
-				}
-				rectangle.setPosition(j * tilesize + startX, i * tilesize + startY);
-				window.draw(rectangle);
 			}
-		}
-		window.display();
-		if (world_started) {
-			day(world, world_after, n);
-			day_num++;
-			get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-			if (compare_coordinates(coord_world, coord_num)) {
-				cout << "Compare_coord" << endl;
-				world_started = 0;
-				null_compare_coord(coord_world, coord_num);
+			window.draw(fon);
+			window.draw(planet);
+			window.draw(Goddess);
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					if (world[i][j] == 0) {
+						rectangle.setFillColor(Color::Black);
+					}
+					if (world[i][j] == 1) {
+						rectangle.setFillColor(Color::Green);
+					}
+					rectangle.setPosition(j * tilesize + startX, i * tilesize + startY);
+					window.draw(rectangle);
+				}
+			}
+			window.display();
+			if (world_started) {
+				day(world, world_after, n);
+				day_num++;
 				get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
+				if (compare_coordinates(coord_world, coord_num)) {
+					cout << "Compare_coord" << endl;
+					world_started = 0;
+					null_compare_coord(coord_world, coord_num);
+					get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
+				}
+				copy_mas(world, world_after, n);
+				null_mas(world_after, n);
+				if (check_null_world(world, n)) {
+					cout << "Null" << endl;
+					world_started = 0;
+				}
+				Sleep(delay_t);
 			}
-			copy_mas(world, world_after, n);
-			null_mas(world_after, n);
-			if (check_null_world(world, n)) {
-				cout << "Null" << endl;
-				world_started = 0;
-			}
-			Sleep(delay_t);
+		break;
+		case 2:
+
+		break;
 		}
 	}
 }
 
 int main()
 {
-
 	init_game();
+
 	return 0;
 }
