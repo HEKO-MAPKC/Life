@@ -148,7 +148,7 @@ void null_compare_coord(string* coordinates, int n) {
 void init_game() {
 	bool isMove = false;
 	bool world_started = 0;
-	int n = 100, day_num = 1, coord_num = 10;
+	int n = 100, day_num = 0, coord_num = 10;
 	int delay_t = 0;
 	string* coord_world;
 	coord_world = new string[coord_num];
@@ -185,6 +185,8 @@ void init_game() {
 	planet_t.loadFromFile("planet.png");
 	Texture box_t;
 	box_t.loadFromFile("box.png");
+	Texture day_t;
+	day_t.loadFromFile("day.png");
 	Font font;
 	font.loadFromFile("font.ttf");
 	Text text1("", font, 30);
@@ -192,6 +194,14 @@ void init_game() {
 	Text text3("", font, 30);
 	Text text4("", font, 30);
 	Text textsp("", font, 30);
+	Text day_num_text;
+	Text num_text;
+	num_text.setFont(font);
+	num_text.setCharacterSize(32);
+	num_text.setPosition(60, 0);
+	day_num_text.setFont(font);
+	day_num_text.setCharacterSize(32);
+	day_num_text.setPosition(60, 0);
 //	text.setColor(Color::White);
 	//text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 	Sprite life;
@@ -208,6 +218,9 @@ void init_game() {
 	Sprite box;
 	box.setTexture(box_t);
 	box.setPosition(10, 410);
+	Sprite day_box;
+	day_box.setTexture(day_t);
+	day_box.setPosition(0, 0);
 	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
 	window.clear(Color::White);
 	RectangleShape rectangle(Vector2f(tilesize, tilesize));
@@ -260,6 +273,7 @@ void init_game() {
 					pos_i = (pixelPos.y - startY) / tilesize;
 					world[pos_i][pos_j] = 1;
 					Goddess.setTextureRect(IntRect(522 * 0, 0, 522, 800));
+					day_num = 0;
 					/*if (world[pos_i][pos_j]) {
 						world[pos_i][pos_j] = 0;
 					}
@@ -280,9 +294,11 @@ void init_game() {
 					}
 					if (event.key.code == Keyboard::R) {
 						null_mas(world, n);
+						day_num = 0;
 					}
 					if (event.key.code == Keyboard::Space) {
 						rand_mas(world, n);
+						day_num = 0;
 						cout << "Key pressed SPACE" << endl;
 					}
 				}
@@ -341,16 +357,23 @@ void init_game() {
 			}
 			window.draw(Goddess);
 			window.draw(box);
-			text1.setString(L"Господи, Михаил, ты такой умный");
+			window.draw(day_box);
+			num_text.setString(L"Дней: ");
+			num_text.setPosition(35, 32);
+			window.draw(num_text);
+			day_num_text.setString(to_string(day_num));
+			day_num_text.setPosition(135, 32);
+			window.draw(day_num_text);
+			text1.setString(L"Будь как дома, путник,");
 			text1.setPosition(88, 660);
 			window.draw(text1);
-			text2.setString(L"программист, а я как ты знаешь");
+			text2.setString(L"Я ни в чём не откажу!");
 			text2.setPosition(88, 660+45);
 			window.draw(text2);
-			text3.setString(L"люблю всякую технику...");
+			text3.setString(L"Множество историй,");
 			text3.setPosition(88, 660 + 45*2);
 			window.draw(text3);
-			text4.setString(L"не хочешь ПЕРЕСПАТЬ СО МНОЙ <3");
+			text4.setString(L"Коль желаешь, расскажу!");
 			text4.setPosition(88, 660 + 45 * 3);
 			window.draw(text4);
 			textsp.setString(L"Непгир");
