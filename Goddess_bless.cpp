@@ -192,6 +192,13 @@ public:
 	}
 };
 
+void set_text_arr(const wstring& str1, const wstring& str2, const wstring& str3, const wstring& str4, RenderWindow& window, text_class text_box[]) {
+	text_box[0].set_text(str1, window);
+	text_box[1].set_text(str2, window);
+	text_box[2].set_text(str3, window);
+	text_box[3].set_text(str4, window);
+}
+
 void init_game() {
 	bool isMove = false;
 	bool world_started = 0;
@@ -219,16 +226,13 @@ void init_game() {
 		}
 	}
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-
 	Music music;
 	music.openFromFile("ost.ogg");
 	music.play();
 	music.setLoop(true);
 	music.setVolume(10.f);
-
 	Texture Goddess_t;
 	Goddess_t.loadFromFile("nep.png");
-
 	sprite_class fon,goddess,planet,box,day_box;
 	fon.init_sprite(0,0,"fon.png");
 	planet.init_sprite(startX - 182, startY - 185, "planet.png");
@@ -237,17 +241,15 @@ void init_game() {
 	goddess.init_sprite(522, 0, 522, 800, 0, 100, 1, "nep.png");
 	Font font;
 	font.loadFromFile("font.ttf");
-	text_class text1, text2, text3, text4,textsp,day_num_text,num_text;
-	text1.init_text(L"", 30, font, 88, 660);
-	text2.init_text(L"", 30, font, 88, 660+45);
-	text3.init_text(L"", 30, font, 88, 660+45*2);
-	text4.init_text(L"", 30, font, 88, 660+45*3);
+	text_class text_box[4],textsp,day_num_text,num_text;
+	for (int i = 0; i < 4; i++) {
+		text_box[i].init_text(L"", 30, font, 88, 660+45*i);
+	}
 	textsp.init_text(L"", 30, font, 105, 560);
 	day_num_text.init_text(L"", 32, font, 135, 32);
 	num_text.init_text(L"", 32, font, 35, 32);
-	
-	
 	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
+	set_text_arr(L"Gehaburn... Оружие,", L"забравшее жизнь всех", L"кого я любила теперь единственное", L"что осталось от прошлой меня.", window, text_box);
 	window.clear(Color::White);
 	RectangleShape rectangle(Vector2f(tilesize, tilesize));
 	RectangleShape rectangle_life(Vector2f(tilesize, tilesize));
@@ -370,11 +372,8 @@ void init_game() {
 			day_box.sprite_draw(window);
 			num_text.set_text(L"Дней: ", window);
 			day_num_text.set_text(to_wstring(day_num), window);
-			text1.set_text(L"Приветствую тебя, Анон.", window);
-			text2.set_text(L"Я Богиня и благословляю", window);
-			text3.set_text(L"этот компьютер.", window);
-			text4.set_text(L"", window);
 			textsp.set_text(L"Богиня", window);
+			set_text_arr(L"Gehaburn... Оружие,", L"забравшее жизнь всех", L"кого я любила теперь единственное", L"что осталось от прошлой меня.", window, text_box);
 			window.display();
 		break;
 		case 2:
