@@ -145,11 +145,62 @@ void null_compare_coord(string* coordinates, int n) {
 	}
 }
 
+class sprite_class {
+
+private:
+	Texture texture_t;
+	Sprite sprite_t;
+	
+public:
+	void init_sprite(int x, int y, int width, int height, int pos_x, int pos_y, int num_anim, string name) {
+		texture_t.loadFromFile(name);
+		sprite_t.setTexture(texture_t);
+		sprite_t.setTextureRect(IntRect(x * num_anim, y, width, height));
+		sprite_t.setPosition(pos_x, pos_y);
+	}
+	void set_anim_frame(int x, int y, int width, int height, int num_anim) {
+		sprite_t.setTextureRect(IntRect(x * num_anim, y, width, height));
+	}
+	void init_sprite(int pos_x, int pos_y, string name) {
+		texture_t.loadFromFile(name);
+		sprite_t.setTexture(texture_t);
+		sprite_t.setPosition(pos_x, pos_y);
+	}
+	void sprite_draw(RenderWindow &window) {
+		window.draw(sprite_t);
+	}
+};
+
+class text_class {
+
+private:
+	Text text_t;
+public:
+	void init_text(const wstring& str, int font_size, Font &font, int pos_x, int pos_y) {
+		text_t.setFont(font);
+		text_t.setCharacterSize(font_size);
+		text_t.setString(str);
+		text_t.setPosition(pos_x, pos_y);
+	}
+	void set_text(const wstring& str, RenderWindow& window) {
+		text_t.setString(str);
+		//text_t.setPosition(pos_x, pos_y);
+		window.draw(text_t);
+	}
+	void text_draw(RenderWindow& window) {
+		window.draw(text_t);
+	}
+};
+
 void init_game() {
 	bool isMove = false;
 	bool world_started = 0;
 	int n = 100, day_num = 0, coord_num = 10;
 	int delay_t = 0;
+	int startX = 700, startY = 50, tilesize = 8;
+	int pos_j, pos_i;
+	int num_scene = 1;
+	float CurrentFrame = 0;
 	string* coord_world;
 	coord_world = new string[coord_num];
 	int** world; 
@@ -168,59 +219,34 @@ void init_game() {
 		}
 	}
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	int startX = 700, startY = 50, tilesize = 8;
-	int pos_j, pos_i;
-	int num_scene = 1;
-	float CurrentFrame = 0;
+
 	Music music;
 	music.openFromFile("ost.ogg");
 	music.play();
 	music.setLoop(true);
 	music.setVolume(10.f);
+
 	Texture Goddess_t;
 	Goddess_t.loadFromFile("nep.png");
-	Texture fon_t;
-	fon_t.loadFromFile("fon.png");
-	Texture planet_t;
-	planet_t.loadFromFile("planet.png");
-	Texture box_t;
-	box_t.loadFromFile("box.png");
-	Texture day_t;
-	day_t.loadFromFile("day.png");
+
+	sprite_class fon,goddess,planet,box,day_box;
+	fon.init_sprite(0,0,"fon.png");
+	planet.init_sprite(startX - 182, startY - 185, "planet.png");
+	box.init_sprite(10, 410, "box.png");
+	day_box.init_sprite(0, 0, "day.png");
+	goddess.init_sprite(522, 0, 522, 800, 0, 100, 1, "nep.png");
 	Font font;
 	font.loadFromFile("font.ttf");
-	Text text1("", font, 30);
-	Text text2("", font, 30);
-	Text text3("", font, 30);
-	Text text4("", font, 30);
-	Text textsp("", font, 30);
-	Text day_num_text;
-	Text num_text;
-	num_text.setFont(font);
-	num_text.setCharacterSize(32);
-	num_text.setPosition(60, 0);
-	day_num_text.setFont(font);
-	day_num_text.setCharacterSize(32);
-	day_num_text.setPosition(60, 0);
-//	text.setColor(Color::White);
-	//text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-	Sprite life;
-	Sprite fon;
-	fon.setTexture(fon_t);
-	fon.setPosition(0, 0);
-	Sprite planet;
-	planet.setTexture(planet_t);
-	planet.setPosition(startX-182, startY-185);
-	Sprite Goddess;
-	Goddess.setTexture(Goddess_t);
-	Goddess.setTextureRect(IntRect(522 * 1, 0, 522, 800));
-	Goddess.setPosition(0, 100);
-	Sprite box;
-	box.setTexture(box_t);
-	box.setPosition(10, 410);
-	Sprite day_box;
-	day_box.setTexture(day_t);
-	day_box.setPosition(0, 0);
+	text_class text1, text2, text3, text4,textsp,day_num_text,num_text;
+	text1.init_text(L"", 30, font, 88, 660);
+	text2.init_text(L"", 30, font, 88, 660+45);
+	text3.init_text(L"", 30, font, 88, 660+45*2);
+	text4.init_text(L"", 30, font, 88, 660+45*3);
+	textsp.init_text(L"", 30, font, 105, 560);
+	day_num_text.init_text(L"", 32, font, 135, 32);
+	num_text.init_text(L"", 32, font, 35, 32);
+	
+	
 	RenderWindow window(VideoMode(1600, 900), "Goddess bless this PC");
 	window.clear(Color::White);
 	RectangleShape rectangle(Vector2f(tilesize, tilesize));
@@ -272,14 +298,8 @@ void init_game() {
 					pos_j = (pixelPos.x - startX) / tilesize;
 					pos_i = (pixelPos.y - startY) / tilesize;
 					world[pos_i][pos_j] = 1;
-					Goddess.setTextureRect(IntRect(522 * 0, 0, 522, 800));
+					goddess.set_anim_frame(522, 0, 522, 800, 0);
 					day_num = 0;
-					/*if (world[pos_i][pos_j]) {
-						world[pos_i][pos_j] = 0;
-					}
-					else if (world[pos_i][pos_j]==0) {
-						world[pos_i][pos_j] = 1;
-					}*/
 					cout << "Choosing" << endl;
 				}
 				if (event.type == Event:: KeyPressed) {
@@ -288,9 +308,8 @@ void init_game() {
 					}
 					if (event.key.code == Keyboard::Enter) {
 						if (!world_started) world_started = 1;
-						Goddess.setTextureRect(IntRect(522 * 0, 0, 522, 800));
+						goddess.set_anim_frame(522, 0, 522, 800, 0);
 						cout << "Key pressed" << endl;
-						//else world_started = 0;
 					}
 					if (event.key.code == Keyboard::R) {
 						null_mas(world, n);
@@ -303,22 +322,13 @@ void init_game() {
 					}
 				}
 			}
-			window.draw(fon);
-			window.draw(planet);
+			fon.sprite_draw(window);
+			planet.sprite_draw(window);
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
-					/*if (world[i][j] == 0) {
-						rectangle.setFillColor(Color::Transparent);
-						rectangle.setOutlineColor(Color::Black);
-						rectangle.setOutlineThickness(1);
-					
-						window.draw(rectangle);
-					}*/
 					rectangle_life.setPosition(j * tilesize + startX, i * tilesize + startY);
 					if (world[i][j] == 1) {
 						rectangle_life.setFillColor(Color(173, 255, 47));
-						//rectangle.setTexture(life_t);
-						//rectangle_life.setTexture(&life_t);
 					}
 					else {
 						rectangle_life.setFillColor(Color::Transparent);
@@ -332,16 +342,16 @@ void init_game() {
 			if (world_started) {
 				day(world, world_after, n);
 				if (day_num <= 30) {
-					Goddess.setTextureRect(IntRect(522*0, 0, 522, 800));
+					goddess.set_anim_frame(522, 0, 522, 800, 0);
 				}
 				if (day_num > 100) {
-					Goddess.setTextureRect(IntRect(522 * 2, 0, 522, 800));
+					goddess.set_anim_frame(522, 0, 522, 800, 2);
 				}
 				day_num++;
 				get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
 				if (compare_coordinates(coord_world, coord_num)) {
 					cout << "Compare_coord" << endl;
-					Goddess.setTextureRect(IntRect(522 * 3, 0, 522, 800));
+					goddess.set_anim_frame(522, 0, 522, 800, 3);
 					day_num = 0;
 					world_started = 0;
 					null_compare_coord(coord_world, coord_num);
@@ -355,30 +365,16 @@ void init_game() {
 				}*/
 				//Sleep(delay_t);
 			}
-			window.draw(Goddess);
-			window.draw(box);
-			window.draw(day_box);
-			num_text.setString(L"Дней: ");
-			num_text.setPosition(35, 32);
-			window.draw(num_text);
-			day_num_text.setString(to_string(day_num));
-			day_num_text.setPosition(135, 32);
-			window.draw(day_num_text);
-			text1.setString(L"Будь как дома, путник,");
-			text1.setPosition(88, 660);
-			window.draw(text1);
-			text2.setString(L"Я ни в чём не откажу!");
-			text2.setPosition(88, 660+45);
-			window.draw(text2);
-			text3.setString(L"Множество историй,");
-			text3.setPosition(88, 660 + 45*2);
-			window.draw(text3);
-			text4.setString(L"Коль желаешь, расскажу!");
-			text4.setPosition(88, 660 + 45 * 3);
-			window.draw(text4);
-			textsp.setString(L"Непгир");
-			textsp.setPosition(105, 560);
-			window.draw(textsp);
+			goddess.sprite_draw(window);
+			box.sprite_draw(window);
+			day_box.sprite_draw(window);
+			num_text.set_text(L"Дней: ", window);
+			day_num_text.set_text(to_wstring(day_num), window);
+			text1.set_text(L"Приветствую тебя, Анон.", window);
+			text2.set_text(L"Я Богиня и благословляю", window);
+			text3.set_text(L"этот компьютер.", window);
+			text4.set_text(L"", window);
+			textsp.set_text(L"Богиня", window);
 			window.display();
 		break;
 		case 2:
