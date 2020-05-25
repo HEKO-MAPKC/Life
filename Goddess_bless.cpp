@@ -229,22 +229,22 @@ void init_game() {
 		}
 	}
 	get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-	Music music;
-	music.openFromFile("ost.ogg");
-	music.play();
-	music.setLoop(true);
-	music.setVolume(10.f);
-	sprite_class fon,goddess,planet,box,day_box,yan;
-	fon.init_sprite(0,0,"fon.png");
-	planet.init_sprite(startX - 182, startY - 185, "planet.png");
-	box.init_sprite(10, 410, "box.png");
-	day_box.init_sprite(0, 0, "day.png");
-	goddess.init_sprite(522, 0, 522, 919, 0, -19, 1, "nep.png");
-	//////////////////
-	goddess.set_pos(0, -19);
-	/////////////////
-	Font font;
-	font.loadFromFile("font.ttf");
+    Music music;
+    music.openFromFile("./music/ost.ogg");
+    music.play();
+    music.setLoop(true);
+    music.setVolume(10.f);
+    sprite_class fon, goddess, planet, box, day_box, yan;
+    fon.init_sprite(0, 0, "./sprite/fon.png");
+    planet.init_sprite(startX - 182, startY - 185, "./sprite/planet.png");
+    box.init_sprite(10, 410, "./sprite/box.png");
+    day_box.init_sprite(0, 0, "./sprite/day.png");
+    goddess.init_sprite(522, 0, 522, 919, 0, -19, 1, "./sprite/nep.png");
+    //////////////////
+    goddess.set_pos(0, -19);
+    /////////////////
+    Font font;
+    font.loadFromFile("./font/font.ttf");
 	text_class text_box[4],textsp,day_num_text,num_text;
 	for (int i = 0; i < 4; i++) {
 		text_box[i].init_text(L"", 30, font, 88, 660+45*i);
