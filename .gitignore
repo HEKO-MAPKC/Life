@@ -13,5 +13,6 @@ Debug
 x64
 packages.config
 packages
+enc_temp_folder
 
 
