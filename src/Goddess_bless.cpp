@@ -1,7 +1,7 @@
+#include <SFML/Graphics.hpp>
 #include "end.hpp"
 #include "life.hpp"
 #include "mas.hpp"
-#include <SFML/Graphics.hpp>
 #include <conio.h>
 #include <iostream>
 #include <math.h>
