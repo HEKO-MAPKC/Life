@@ -1,7 +1,7 @@
-#include <SFML/Graphics.hpp>
 #include "end.hpp"
 #include "life.hpp"
 #include "mas.hpp"
+#include <SFML/Graphics.hpp>
 #include <conio.h>
 #include <iostream>
 #include <math.h>
@@ -13,7 +13,6 @@
 #include <windows.h>
 using namespace std;
 using namespace sf;
-
 
 class sprite_class {
 private:
@@ -81,22 +80,9 @@ public:
     }
 };
 
-void set_text_arr(
-        const wstring& str1,
-        const wstring& str2,
-        const wstring& str3,
-        const wstring& str4,
-        RenderWindow& window,
-        text_class text_box[])
+int main()
 {
-    text_box[0].set_text(str1, window);
-    text_box[1].set_text(str2, window);
-    text_box[2].set_text(str3, window);
-    text_box[3].set_text(str4, window);
-}
-
-void init_game()
-{
+    setlocale(LC_ALL, "Russian");
     bool isMove = false;
     bool world_started = 0;
     int n = 100, day_num = 0, coord_num = 10;
@@ -294,8 +280,9 @@ void init_game()
                     day_num = 0;
                     world_started = 0;
                     null_compare_coord(coord_world, coord_num);
-                    get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
-					}
+                    get_coordinates(
+                            world_after, coord_world[day_num % (coord_num)], n);
+                }
                 copy_mas(world, world_after, n);
                 null_mas(world_after, n);
                 Sleep(delay_t);
@@ -337,11 +324,5 @@ void init_game()
             break;
         }
     }
-}
-
-int main()
-{
-    setlocale(LC_ALL, "Russian");
-    init_game();
     return 0;
 }
