@@ -307,7 +307,7 @@ int main()
                     if (event.key.code == Keyboard::S) {
                         world_started = 0;
                     }
-                    if (event.key.code == sf::Keyboard::Enter) {
+                    if (event.key.code == sf::Keyboard::Return) {
                         if (!world_started)
                             world_started = 1;
                         goddess.set_anim_frame(522, 0, 522, 919, 0);
