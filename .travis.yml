@@ -1,17 +1,16 @@
 language: cpp
 compiler: gcc
-os: windows
 sudo: required
 install:
   - sudo apt-get --no-install-recommends -y install cxxtest
-  - cd /usr/local && sudo wget https://www.sfml-dev.org/files/SFML-2.5.1-linux-gcc-64-bit.tar.gz && sudo tar -xzf SFML-2.5.1-linux-gcc-64-bit.tar.gz && sudo cp -r SFML-2.5.1/include . && sudo cp -r SFML-2.5.1/lib . && sudo cp -r SFML-2.5.1/share . && sudo rm -rf SFML-2.5.1 && cd -
-env: CMAKE_BUILD_TYPE=Release SFML_VER=2.5.1 TARGET_BITS=64 ZLIB_ROOT="C:\Program Files\zlib" ZPG_ROOT="C:\Program Files\libZpg" SFML_ROOT=$TRAVIS_BUILD_DIR\..\SFML-${SFML_VER}_win${TARGET_BITS} SFML_PACKAGE=SFML-$SFML_VER-windows-vc15-$TARGET_BITS-bit.zip CMAKE_GENERATOR="Visual Studio 15 2017 Win$TARGET_BITS" ZPG_PACKER_BIN="${ZPG_ROOT}\bin\zpg_packer.exe"
-stage: Release64
+ before_install: sudo apt-get install -y cmake zlib1g-dev libfreetype6-dev libx11-dev libxrandr-dev libxcb1-dev libx11-xcb-dev libxcb-randr0-dev libxcb-image0-dev libflac-dev libogg-dev libvorbis-dev libvorbisenc2 libvorbisfile3 libopenal-dev libudev-dev libsndfile1-dev libglew-dev
+    env: CMAKE_BUILD_TYPE=Release SFML_VER=2.5.1 TARGET_BITS=64 ZPG_PACKER_BIN=/usr/bin/zpg_packer
+    stage: Release64
     addons:
       artifacts:
         paths:
-        - $TRAVIS_BUILD_DIR/build/Release/MVRunner
-        - $TRAVIS_BUILD_DIR/build/*.zip
+        - $TRAVIS_BUILD_DIR/build-Release/MVRunner
+        - $TRAVIS_BUILD_DIR/build-Release/*.tar.gz
 matrix:
   fast_finish: true
   include:
@@ -25,7 +24,7 @@ matrix:
       env:
          - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
-    - os: linux
+    - os: windows
       addons:
         apt:
           sources:
@@ -57,21 +56,6 @@ matrix:
 
 before_install:
     - eval "${MATRIX_EVAL}"
-
-before_script:
-  - wget https://www.sfml-dev.org/files/SFML-2.5.1-linux-gcc-64-bit.tar.gz -O /tmp/sfml.tar.gz
-  - tar -xvf /tmp/sfml.tar.gz
-  - sudo cp -r SFML-2.5.1/* /usr/
-  - wget http://www.bromeon.ch/libraries/thor/download/v2.0/thor-v2.0-linux64-make.tar.gz -O /tmp/thor.tar.gz
-  - tar -xvf /tmp/thor.tar.gz
-  - sudo cp -r thor-v2.0-linux64-make/* /usr/
-  - sudo apt-get install -y libjpeg62-dev libsndfile1-dev libglew1.5 libglew1.5-dev libfreetype6 libjpeg-turbo8 libjpeg8 libopenal-data libopenal1  libxrandr2 libxrender1 libsoil1 libxcb-image0 libxcb-randr0 libudev1
-  - sudo apt-get install -y libx11-dev libgl1-mesa-dev libudev-dev libfreetype6-dev libopenal-dev libflac-dev libvorbis-dev
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update
-  - sudo apt-get install libsfml-dev
-  - sudo apt-get install libcurl4-openssl-dev
-
 script: 
     - make
     - git ls-files src/ | xargs clang-format -i && git diff --exit-code
