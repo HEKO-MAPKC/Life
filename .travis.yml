@@ -1,8 +1,9 @@
 language: cpp
 compiler: gcc
-
+sudo: required
 install:
   - sudo apt-get --no-install-recommends -y install cxxtest
+  - sudo apt-get install libsfml-dev
 matrix:
   fast_finish: true
   include:
@@ -48,6 +49,19 @@ matrix:
 
 before_install:
     - eval "${MATRIX_EVAL}"
+
+before_script:
+  - wget https://www.sfml-dev.org/files/SFML-2.3.2-linux-gcc-64-bit.tar.gz -O /tmp/sfml.tar.gz
+  - tar -xvf /tmp/sfml.tar.gz
+  - sudo cp -r SFML-2.3.2/* /usr/
+  - wget http://www.bromeon.ch/libraries/thor/download/v2.0/thor-v2.0-linux64-make.tar.gz -O /tmp/thor.tar.gz
+  - tar -xvf /tmp/thor.tar.gz
+  - sudo cp -r thor-v2.0-linux64-make/* /usr/
+  - sudo apt-get install -y libjpeg62-dev libsndfile1-dev libglew1.5 libglew1.5-dev libfreetype6 libjpeg-turbo8 libjpeg8 libopenal-data libopenal1  libxrandr2 libxrender1 libsoil1 libxcb-image0 libxcb-randr0 libudev1
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update
+  - sudo apt-get install g++-4.9
+  - cd src
 
 script: 
     - make
