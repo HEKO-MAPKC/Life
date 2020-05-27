@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 #include "end.hpp"
 #include "life.hpp"
 #include "mas.hpp"

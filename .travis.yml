@@ -48,5 +48,5 @@ before_install:
     - eval "${MATRIX_EVAL}"
 
 script: 
-    - make
+    - make god
     - git ls-files src/ | xargs clang-format -i && git diff --exit-code
