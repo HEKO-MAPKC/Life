@@ -1,5 +1,6 @@
 language: cpp
 compiler: gcc
+os: windows
 sudo: required
 install:
   - sudo apt-get --no-install-recommends -y install cxxtest
