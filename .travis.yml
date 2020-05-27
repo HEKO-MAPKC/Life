@@ -51,9 +51,9 @@ before_install:
     - eval "${MATRIX_EVAL}"
 
 before_script:
-  - wget https://www.sfml-dev.org/files/SFML-2.3.2-linux-gcc-64-bit.tar.gz -O /tmp/sfml.tar.gz
+  - wget https://www.sfml-dev.org/files/SFML-2.5.1-linux-gcc-64-bit.tar.gz -O /tmp/sfml.tar.gz
   - tar -xvf /tmp/sfml.tar.gz
-  - sudo cp -r SFML-2.3.2/* /usr/
+  - sudo cp -r SFML-2.5.1/* /usr/
   - wget http://www.bromeon.ch/libraries/thor/download/v2.0/thor-v2.0-linux64-make.tar.gz -O /tmp/thor.tar.gz
   - tar -xvf /tmp/thor.tar.gz
   - sudo cp -r thor-v2.0-linux64-make/* /usr/
