@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <windows.h>
+#include <unistd.h>
 using namespace std;
 using namespace sf;
 
@@ -208,7 +208,7 @@ int main()
 {
     setlocale(LC_ALL, "Russian");
     bool isMove = false, world_started = 0;
-    int n = 400, day_num = 0, coord_num = 10, delay_t = 50, startX = 700,
+    int n = 400, day_num = 0, coord_num = 10, delay_t = 50000, startX = 700,
         startY = 50, tilesize = 8, num_scene = 2;
     int pos_j, pos_i;
     string* coord_world;
@@ -323,11 +323,11 @@ int main()
                         day_num = 0;
                     }
                     if (event.key.code == Keyboard::Up) {
-                        delay_t += 10;
+                        delay_t += 10000;
                     }
                     if (event.key.code == Keyboard::Down) {
-                        if (delay_t >= 10)
-                            delay_t -= 10;
+                        if (delay_t >= 10000)
+                            delay_t -= 10000;
                     }
                     if (event.key.code == Keyboard::Right
                         || event.key.code == Keyboard::Left) {
@@ -409,7 +409,7 @@ int main()
                 }
                 copy_mas(world, world_after, n);
                 null_mas(world_after, n);
-                Sleep(delay_t);
+                usleep(delay_t);
             }
             goddess.sprite_draw(window);
             box.sprite_draw(window);
@@ -434,7 +434,7 @@ int main()
             textsp.set_text("Goddess", window);
             goddess_set_anim(1, goddess, text_box, window);
             window.display();
-            Sleep(3000);
+            usleep(30000000);
             goddess_set_anim(2, goddess, text_box, window);
             fon.sprite_draw(window);
             planet.sprite_draw(window);
