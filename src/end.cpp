@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string.h>
 #include <math.h>
+#include <string.h>
 using namespace std;
 
 void get_coordinates(int** mas, string& coord, int n)
@@ -33,17 +33,18 @@ void null_compare_coord(string* coordinates, int n)
         coordinates[i] = to_string(i);
     }
 }
-int check_null_world(int** mas1, int n) {
-	int v = 0;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			if (mas1[i][j] == 0) {
-				v++;
-			}
-		}
-	}
-	if (v == pow(n, 2)) {
-		return 1;
-	}
-	return 0;
+int check_null_world(int** mas1, int n)
+{
+    int v = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (mas1[i][j] == 0) {
+                v++;
+            }
+        }
+    }
+    if (v == pow(n, 2)) {
+        return 1;
+    }
+    return 0;
 }

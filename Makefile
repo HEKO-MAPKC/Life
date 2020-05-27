@@ -10,13 +10,13 @@ god: ./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/src/Goddess_
 	g++ -c ./src/Goddess_bless.cpp -o ./build/src/Goddess_bless.o  -DSFML_STATIC -ID:\LABA\Note\SFML\include -lm
 
 ./build/src/end.o: ./src/end.cpp	
-	g++ -Wall -Werror -c ./src/end.cpp -o ./build/src/end.o -lm
+	g++ -std=c++17 -Wall -Werror -c ./src/end.cpp -o ./build/src/end.o -lm
 	
 ./build/src/life.o: ./src/life.cpp	
-	g++ -Wall -Werror -c ./src/life.cpp -o ./build/src/life.o -lm	
+	g++ -std=c++17 -Wall -Werror -c ./src/life.cpp -o ./build/src/life.o -lm	
 	
 ./build/src/mas.o: ./src/mas.cpp	
-	g++ -Wall -Werror -c ./src/mas.cpp -o ./build/src/mas.o -lm
+	g++ -std=c++17 -Wall -Werror -c ./src/mas.cpp -o ./build/src/mas.o -lm
 	
 	
 clean:
