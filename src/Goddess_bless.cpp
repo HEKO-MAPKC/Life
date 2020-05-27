@@ -1,4 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include "end.hpp"
+#include "life.hpp"
+#include "mas.hpp"
 #include <conio.h>
 #include <iostream>
 #include <math.h>
@@ -8,103 +11,9 @@
 #include <time.h>
 #include <vector>
 #include <windows.h>
-#include "end.hpp"
 using namespace std;
 using namespace sf;
 
-void rand_mas(int** mas, int n)
-{
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            mas[i][j] = rand() % 2;
-        }
-    }
-}
-int compare_mas(int** mas1, int** mas2, int n)
-{
-    int v = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (mas1[i][j] == mas2[i][j]) {
-                v++;
-            }
-        }
-    }
-    if (v == pow(n, 2)) {
-        return 1;
-    }
-    return 0;
-}
-
-void out_mas(int** mas, int n)
-{
-    cout << endl;
-    cout << endl;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cout << mas[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-
-int num_life(int** world, int n, int x, int y)
-{
-    int num = 0;
-    for (int i = -1; i <= 1; i++) {
-        for (int j = -1; j <= 1; j++) {
-            if (x + i < n && y + j < n && x + i >= 0 && y + j >= 0
-                && !(i == 0 && j == 0)) {
-                if (world[x + i][y + j] == 1) {
-                    num++;
-                }
-            }
-            if (num > 3) {
-                return 0;
-            }
-        }
-    }
-
-    if (num < 2) {
-        return 0;
-    } else {
-        return num;
-    }
-}
-
-void day(int** world, int** world_after, int n)
-{
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (world[i][j] == 0) {
-                if (num_life(world, n, i, j) == 3) {
-                    world_after[i][j] = 1;
-                }
-            } else {
-                if (num_life(world, n, i, j) != 0) {
-                    world_after[i][j] = 1;
-                }
-            }
-        }
-    }
-}
-
-void null_mas(int** mas, int n)
-{
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            mas[i][j] = 0;
-        }
-    }
-}
-void copy_mas(int** mas1, int** mas2, int n)
-{
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            mas1[i][j] = mas2[i][j];
-        }
-    }
-}
 
 class sprite_class {
 private:
