@@ -1,12 +1,5 @@
-#include <conio.h>
 #include <iostream>
 #include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#include <string>
-#include <time.h>
-#include <vector>
-#include <windows.h>
 using namespace std;
 
 void rand_mas(int** mas, int n)

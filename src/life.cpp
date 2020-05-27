@@ -1,12 +1,4 @@
-#include <conio.h>
 #include <iostream>
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#include <string>
-#include <time.h>
-#include <vector>
-#include <windows.h>
 using namespace std;
 
 int num_life(int** world, int n, int x, int y)
