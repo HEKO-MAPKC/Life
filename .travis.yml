@@ -4,7 +4,12 @@ os: windows
 sudo: required
 install:
   - sudo apt-get --no-install-recommends -y install cxxtest
-
+  - cd /usr/local && sudo wget https://www.sfml-dev.org/files/SFML-2.5.1-linux-gcc-64-bit.tar.gz && sudo tar -xzf SFML-2.5.1-linux-gcc-64-bit.tar.gz && sudo cp -r SFML-2.5.1/include . && sudo cp -r SFML-2.5.1/lib . && sudo cp -r SFML-2.5.1/share . && sudo rm -rf SFML-2.5.1 && cd -
+addons:
+  apt:
+    packages:
+      - libsfml-dev
+      - libusb-1.0-0-dev
 matrix:
   fast_finish: true
   include:
