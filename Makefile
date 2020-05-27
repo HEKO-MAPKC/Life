@@ -4,7 +4,7 @@ DIR=./build/src/mas.o ./build/src/end.o ./build/src/life.o ./build/src/Goddess_b
 all:god
 
 god: ./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/src/Goddess_bless.o 
-	g++ $(DIR) -ID:\LABA\Note\SFML\include -LD:\LABA\Note\SFML\lib -o ./bin/god -DSFML_STATIC -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s -lopengl32 -lwinmm -lgdi32 -lfreetype 
+	g++ $(DIR) -DSFML_STATIC -ID:\LABA\Note\SFML\include -LD:\LABA\Note\SFML\lib -o ./bin/god  -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lsfml-audio-s -lopengl32 -lwinmm -lgdi32 -lfreetype 
 
 ./build/src/Goddess_bless.o: ./src/Goddess_bless.cpp	
 	g++ -std=c++17 -c ./src/Goddess_bless.cpp -o ./build/src/Goddess_bless.o  -DSFML_STATIC -ID:\LABA\Note\SFML\include -lm
