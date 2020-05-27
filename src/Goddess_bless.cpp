@@ -8,6 +8,7 @@
 #include <time.h>
 #include <vector>
 #include <windows.h>
+#include "end.hpp"
 using namespace std;
 using namespace sf;
 
@@ -34,17 +35,7 @@ int compare_mas(int** mas1, int** mas2, int n)
     }
     return 0;
 }
-int compare_coordinates(string* coordinates, int n)
-{
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (coordinates[i] == coordinates[j]) {
-                return 1;
-            }
-        }
-    }
-    return 0;
-}
+
 void out_mas(int** mas, int n)
 {
     cout << endl;
@@ -106,49 +97,12 @@ void null_mas(int** mas, int n)
         }
     }
 }
-
 void copy_mas(int** mas1, int** mas2, int n)
 {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             mas1[i][j] = mas2[i][j];
         }
-    }
-}
-
-int check_null_world(int** mas1, int n)
-{
-    int v = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (mas1[i][j] == 0) {
-                v++;
-            }
-        }
-    }
-    if (v == pow(n, 2)) {
-        cout << "FINISH" << endl;
-        return 1;
-    }
-    return 0;
-}
-void get_coordinates(int** mas, string& coord, int n)
-{
-    coord = "";
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (mas[i][j]) {
-                coord += to_string(i) + to_string(j);
-            }
-        }
-    }
-}
-
-void null_compare_coord(string* coordinates, int n)
-{
-    for (int i = 0; i < n; i++) {
-        coordinates[i] = to_string(i);
     }
 }
 
@@ -431,15 +385,10 @@ void init_game()
                     day_num = 0;
                     world_started = 0;
                     null_compare_coord(coord_world, coord_num);
-                    get_coordinates(
-                            world_after, coord_world[day_num % (coord_num)], n);
-                }
+                    get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
+					}
                 copy_mas(world, world_after, n);
                 null_mas(world_after, n);
-                /*if (check_null_world(world, n)) {
-                        cout << "Null" << endl;
-                        world_started = 0;
-                }*/
                 Sleep(delay_t);
             }
             goddess.sprite_draw(window);
