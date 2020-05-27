@@ -27,18 +27,6 @@ int compare_mas(int** mas1, int** mas2, int n)
     return 0;
 }
 
-void out_mas(int** mas, int n)
-{
-    cout << endl;
-    cout << endl;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cout << mas[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-
 void null_mas(int** mas, int n)
 {
     for (int i = 0; i < n; i++) {

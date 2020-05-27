@@ -2,7 +2,6 @@
 #include "end.hpp"
 #include "life.hpp"
 #include "mas.hpp"
-#include <conio.h>
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
