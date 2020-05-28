@@ -2,33 +2,28 @@ language: cpp
 compiler: gcc
 dist: xenial
 sudo: required
-
-addons:
-  apt:
-    packages:
-      - git
-      - libx11-dev
-      - freeglut3-dev
-      - libxcb-image0-dev
-      - libudev-dev
-      - libjpeg8-dev
-      - libopenal-dev
-      - libsndfile1-dev
-      - libfreetype6-dev
-      - libxrandr-dev
-
-before_script:
-  - git clone https://github.com/SFML/SFML /tmp/SFML
-  - cd /tmp/SFML
-  - git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
-  - cmake .
-  - cmake --build . -- -j4
-  - sudo make install
-  - cd -
+jobs:
+  include:
+  - stage: Unit tests
+    name: Linux (gcc 6)
+    os: linux
+    dist: xenial
+    env: COMPILER=g++-6
+    services:
+    - xvfb
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-6
+        - libudev-dev
+        - libxrandr-dev
+        - libgl1-mesa-dev
+    cache:
+      directories:
+      - $HOME/SFML-2.5.0_LINUX
 
 script:
-  - cmake -DCMAKE_MODULE_PATH="/tmp/SFML/cmake/Modules" .
-  - cmake --build . -- -j4
-  - sudo make install
   - make
   - git ls-files src/ | xargs clang-format -i && git diff --exit-code
