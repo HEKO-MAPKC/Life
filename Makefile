@@ -24,7 +24,6 @@ test: ./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/test/test.o
 
 ./build/test/test.o: ./test/test.cpp
 	g++ -std=c++11 -c ./test/test.cpp  -o  ./build/test/test.o -ISFML1\include -LSFML1\lib -lm
-	
-	
+
 clean:
 	rm -rf ./build/src/*.o ./build/test/*.o
