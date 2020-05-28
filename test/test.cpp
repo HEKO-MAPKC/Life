@@ -84,3 +84,51 @@ TEST_CASE("Get_coordinates are computed", "[get_coordinates]")
 	REQUIRE(b[0] == "0110");
 }
 
+TEST_CASE("Day are computed", "[day]")
+{   const int n=2;
+	int** a;
+    a = new int*[n];
+    int** b;
+    b = new int*[n];
+	for (int i = 0; i < n; i++) {
+        a[i] = new int[n];
+        b[i] = new int[n];
+    }
+	for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            b[i][j] = 0;
+        }
+    }
+	a[0][0]=1;
+	a[0][1]=1;
+	a[1][0]=1;
+	a[1][1]=0;
+	day(a, b, n);
+	REQUIRE(b[0][0] == 1);
+	REQUIRE(b[0][1] == 1);
+	REQUIRE(b[1][0] == 1);
+	REQUIRE(b[1][1] == 1);
+}
+
+TEST_CASE("num_life are computed", "[num_life]")
+{   const int n=2;
+	int** a;
+    a = new int*[n];
+    int** b;
+    b = new int*[n];
+	for (int i = 0; i < n; i++) {
+        a[i] = new int[n];
+        b[i] = new int[n];
+    }
+	a[0][0]=1;
+	a[0][1]=1;
+	a[1][0]=1;
+	a[1][1]=0;
+	b[0][0]=1;
+	b[0][1]=0;
+	b[1][0]=0;
+	b[1][1]=0;
+	REQUIRE(num_life(a, n, 1, 1) == 3);
+	REQUIRE(num_life(b, n, 0, 0) == 0);
+	
+}
