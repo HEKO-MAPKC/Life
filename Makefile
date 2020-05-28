@@ -23,7 +23,7 @@ test: ./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/test/test.o
 	g++ -std=c++17 -Wall -Werror -c ./src/mas.cpp -o ./build/src/mas.o -lm
 
 ./build/test/test.o: ./test/test.cpp
-	g++ -std=c++17 -c ./test/test.cpp  -o  ./build/test/test.o -ISFML1\include -LSFML1\lib -lm
+	g++ -std=c++11 -c ./test/test.cpp  -o  ./build/test/test.o -ISFML1\include -LSFML1\lib -lm
 	
 	
 clean:
