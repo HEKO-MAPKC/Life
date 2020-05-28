@@ -17,7 +17,6 @@ int num_life(int** world, int n, int x, int y)
             }
         }
     }
-
     if (num < 2) {
         return 0;
     } else {
