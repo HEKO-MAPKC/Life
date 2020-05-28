@@ -34,3 +34,15 @@ TEST_CASE("Check_null_world are computed", "[check_null_world]")
     REQUIRE(expecteda == resulta);
 	REQUIRE(expectedb == resultb);
 }
+TEST_CASE("Null_compare_coord are computed", "[null_compare_coord]")
+{   
+	string* a;
+	const int n=5;
+    a = new string[n];
+	null_compare_coord(a, n); 
+    REQUIRE(a[0] == "0");
+	REQUIRE(a[1] == "1");
+	REQUIRE(a[2] == "2");
+	REQUIRE(a[3] == "3");
+	REQUIRE(a[4] == "4");
+}
