@@ -1,11 +1,5 @@
 language: cpp
 compiler: gcc
-sudo: required
-install:
-  - sudo apt-get --no-install-recommends -y install cxxtest
-  
- before_install: sudo apt-get install -y cmake zlib1g-dev libfreetype6-dev libx11-dev libxrandr-dev libxcb1-dev libx11-xcb-dev libxcb-randr0-dev libxcb-image0-dev libflac-dev libogg-dev libvorbis-dev libvorbisenc2 libvorbisfile3 libopenal-dev libudev-dev libsndfile1-dev libglew-dev
- 
 matrix:
   fast_finish: true
   include:
@@ -51,17 +45,6 @@ matrix:
 
 before_install:
     - eval "${MATRIX_EVAL}"
-
-before_script:
-  - wget https://www.sfml-dev.org/files/SFML-2.5.1-linux-gcc-64-bit.tar.gz -O /tmp/sfml.tar.gz
-  - tar -xvf /tmp/sfml.tar.gz
-  - sudo cp -r SFML-2.5.1/* /usr/
-  - sudo cp -r thor-v2.0-linux64-make/* /usr/
-  - sudo apt-get install -y libjpeg62-dev libsndfile1-dev libglew1.5 libglew1.5-dev libfreetype6 libjpeg-turbo8 libjpeg8 libopenal-data libopenal1  libxrandr2 libxrender1 libsoil1 libxcb-image0 libxcb-randr0 libudev1
-  - sudo apt-get install -y libx11-dev libgl1-mesa-dev libudev-dev libfreetype6-dev libopenal-dev libflac-dev libvorbis-dev
-  - sudo apt-get update
-  - sudo apt-get install libsfml-dev
-
 script: 
     - make
     - git ls-files src/ | xargs clang-format -i && git diff --exit-code
