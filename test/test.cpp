@@ -46,3 +46,20 @@ TEST_CASE("Null_compare_coord are computed", "[null_compare_coord]")
 	REQUIRE(a[3] == "3");
 	REQUIRE(a[4] == "4");
 }
+
+TEST_CASE("Compare_coordinates are computed", "[compare_coordinates]")
+{   
+	string* a;
+	string* b;
+	const int n=2;
+    a = new string[n];
+	b = new string[n];
+	a[0]="1234";
+	a[1]="1234";
+	b[0]="1234";
+	b[1]="1231";
+	const int expecteda = 1;
+	const int expectedb = 0;
+	REQUIRE(compare_coordinates(a,n) == expecteda);
+	REQUIRE(compare_coordinates(b,n) == expectedb);
+}
