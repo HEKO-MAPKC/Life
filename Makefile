@@ -4,7 +4,7 @@ DIR=./build/src/mas.o ./build/src/end.o ./build/src/life.o ./build/src/Goddess_b
 all:god
 
 god: ./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/src/Goddess_bless.o 
-	g++ -std=c++11 -Wall -Werror $(DIR) -o ./bin/god -ISFML1\include -LSFML1\lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lopengl32 -lwinmm -lgdi32 -lfreetype 
+	g++ -std=c++11 -Wall -Werror $(DIR) -o ./bin/god -ISFML1\include -LSFML1\lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lfreetype 
 
 ./build/src/Goddess_bless.o: ./src/Goddess_bless.cpp	
 	g++ -std=c++17 -c ./src/Goddess_bless.cpp -o ./build/src/Goddess_bless.o -ISFML1\include -lm
