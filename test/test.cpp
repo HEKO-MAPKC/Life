@@ -34,6 +34,7 @@ TEST_CASE("Check_null_world are computed", "[check_null_world]")
     REQUIRE(expecteda == resulta);
 	REQUIRE(expectedb == resultb);
 }
+
 TEST_CASE("Null_compare_coord are computed", "[null_compare_coord]")
 {   
 	string* a;
@@ -63,3 +64,23 @@ TEST_CASE("Compare_coordinates are computed", "[compare_coordinates]")
 	REQUIRE(compare_coordinates(a,n) == expecteda);
 	REQUIRE(compare_coordinates(b,n) == expectedb);
 }
+
+TEST_CASE("Get_coordinates are computed", "[get_coordinates]")
+{   
+	const int k=2;
+	int** a;
+    a = new int*[k];
+	for (int i = 0; i < k; i++) {
+        a[i] = new int[k];
+    }
+	const int n=1;
+	string* b;
+    b = new string[n];
+	a[0][0]=0;
+	a[0][1]=1;
+	a[1][0]=1;
+	a[1][1]=0;
+    get_coordinates(a, b[0], k);
+	REQUIRE(b[0] == "0110");
+}
+
