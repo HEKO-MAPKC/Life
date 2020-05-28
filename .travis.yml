@@ -2,27 +2,31 @@ language: cpp
 compiler: gcc
 dist: xenial
 sudo: required
-jobs:
-  include:
-  - stage: Unit tests
-    name: Linux (gcc 6)
-    os: linux
-    dist: xenial
-    env: COMPILER=g++-6
-    services:
-    - xvfb
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - g++-6
-        - libudev-dev
-        - libxrandr-dev
-        - libgl1-mesa-dev
-    cache:
-      directories:
-      - $HOME/SFML-2.5.0_LINUX
+install:
+  - sudo apt-get --no-install-recommends -y install cxxtest
+addons:
+  apt:
+    packages:
+      - git
+      - libx11-dev
+      - freeglut3-dev
+      - libxcb-image0-dev
+      - libudev-dev
+      - libjpeg8-dev
+      - libopenal-dev
+      - libsndfile1-dev
+      - libfreetype6-dev
+      - libxrandr-dev
+
+before_script:
+  - sudo ldconfig
+  - git clone https://github.com/SFML/SFML /tmp/SFML
+  - cd /tmp/SFML
+  - git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
+  - cmake .
+  - cmake --build . -- -j4
+  - sudo make install
+  - cd -
 
 script:
   - make
