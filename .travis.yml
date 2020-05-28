@@ -1,54 +1,34 @@
 language: cpp
 compiler: gcc
+dist: xenial
+sudo: required
+
 addons:
   apt:
     packages:
-    - libgl1-mesa-dev
-    - libopenal-dev
-    - libjpeg-dev
-    - libudev-dev
-    - libxrandr-dev
-    - libfreetype6-dev
-    - libvorbis-dev
-    - libflac-dev
-  homebrew:
-    packages:
-     - cmake
-    update: true
-matrix:
-  include:
-  - name: "Ubuntu Bionic 18.04 GCC"
-    os: linux
-    dist: bionic
-    compiler: gcc
-  - name: "Ubuntu Bionic 18.04 Clang"
-    os: linux
-    dist: bionic
-    compiler: clang
-  - name: "macOS 10.14 GCC"
-    os: osx
-    osx_image: xcode11.3
-    compiler: gcc
-  - name: "macOS 10.14 Clang"
-    os: osx
-    osx_image: xcode11.3
-    compiler: clang
-  - name: "Windows GCC"
-    os: windows
-    compiler: gcc
-install:
-- git clone https://github.com/SFML/SFML.git
-- cd SFML
-- mkdir install
-- mkdir build
-- cd build
-- cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_INSTALL_FRAMEWORK_PREFIX=../install -DSFML_BUILD_FRAMEWORKS=FALSE -DBUILD_SHARED_LIBS=TRUE ..
-- cmake --build . --config Release --target install
-- cd ../../
+      - git
+      - libx11-dev
+      - freeglut3-dev
+      - libxcb-image0-dev
+      - libudev-dev
+      - libjpeg8-dev
+      - libopenal-dev
+      - libsndfile1-dev
+      - libfreetype6-dev
+      - libxrandr-dev
+
+before_script:
+  - git clone https://github.com/SFML/SFML /tmp/SFML
+  - cd /tmp/SFML
+  - git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
+  - cmake .
+  - cmake --build . -- -j4
+  - sudo make install
+  - cd -
+
 script:
-- mkdir install/
-- mkdir install/SmallGameEngine
-- cmake -DCMAKE_INSTALL_PREFIX=./install/SmallGameEngine -DSFML_DIR=./SFML/install/lib/cmake/SFML .
-- cmake --build . --config Release --target install 
-- make
-- git ls-files src/ | xargs clang-format -i && git diff --exit-code
+  - cmake -DCMAKE_MODULE_PATH="/tmp/SFML/cmake/Modules" .
+  - cmake --build . -- -j4
+  - sudo make install
+  - make
+  - git ls-files src/ | xargs clang-format -i && git diff --exit-code
