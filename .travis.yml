@@ -4,6 +4,9 @@ dist: xenial
 sudo: required
 install:
   - sudo apt-get --no-install-recommends -y install cxxtest
+  - sudo apt-get install libsfml-dev
+  - sudo apt-get update
+  - sudo apt-get install build-essential g++ cmake libjpeg-dev libfreetype6-dev libglew-dev libxrandr-dev libopenal-dev libsndfile-dev libgl1-mesa-dev libxcb-image0-dev libudev-dev
 addons:
   apt:
     packages:
