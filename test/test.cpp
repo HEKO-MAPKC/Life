@@ -4,11 +4,7 @@
 #include "../src/life.hpp"
 #include "../src/mas.hpp"
 #include <iostream>
-#include <math.h>
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
-#include <unistd.h>
 using namespace std;
 TEST_CASE("Check_null_world are computed", "[check_null_world]")
 {
