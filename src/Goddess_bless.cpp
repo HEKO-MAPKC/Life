@@ -220,7 +220,6 @@ int main()
         }
     }
     n = 50;
-    get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
     sprite_class fon, goddess, planet, box, day_box, yan;
     fon.init_sprite(0, 0, "./sprite/fon.png");
     planet.init_sprite(startX - 182, startY - 185, "./sprite/planet.png");
@@ -346,10 +345,6 @@ int main()
                         rectangle.setSize(Vector2f(tilesize, tilesize));
                         rectangle_life.setSize(Vector2f(tilesize, tilesize));
                         null_compare_coord(coord_world, coord_num);
-                        get_coordinates(
-                                world_after,
-                                coord_world[day_num % (coord_num)],
-                                n);
                     }
                     if (event.key.code == Keyboard::Q) {
                         for (int i = 0; i < n; i++) {
@@ -394,9 +389,8 @@ int main()
                     else
                         goddess_set_anim(8, goddess, text_box, window);
                     world_started = 0;
+                    day_num--;
                     null_compare_coord(coord_world, coord_num);
-                    get_coordinates(
-                            world_after, coord_world[day_num % (coord_num)], n);
                 }
                 copy_mas(world, world_after, n);
                 null_mas(world_after, n);
