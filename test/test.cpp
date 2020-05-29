@@ -114,12 +114,12 @@ TEST_CASE("Num_life are computed", "[num_life]")
     a = new int*[n];
     int** b;
     b = new int*[n];
-	int** c;
+    int** c;
     c = new int*[n];
     for (int i = 0; i < n; i++) {
         a[i] = new int[n];
         b[i] = new int[n];
-		c[i] = new int[n];
+        c[i] = new int[n];
     }
     a[0][0] = 1;
     a[0][1] = 1;
@@ -129,13 +129,13 @@ TEST_CASE("Num_life are computed", "[num_life]")
     b[0][1] = 0;
     b[1][0] = 0;
     b[1][1] = 0;
-	c[0][0] = 1;
+    c[0][0] = 1;
     c[0][1] = 1;
     c[1][0] = 0;
     c[1][1] = 0;
     REQUIRE(num_life(a, n, 1, 1) == 3);
-	REQUIRE(num_life(c, n, 1, 0) == 2);
-	REQUIRE(num_life(b, n, 0, 0) == 0);
+    REQUIRE(num_life(c, n, 1, 0) == 2);
+    REQUIRE(num_life(b, n, 0, 0) == 0);
 }
 
 TEST_CASE("Copy_mas are computed", "[copy_mas]")
