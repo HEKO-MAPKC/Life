@@ -1,29 +1,35 @@
-DIR=./build/src/mas.o ./build/src/end.o ./build/src/life.o ./build/src/Goddess_bless.o 
-
 .PHONY:clean
+CXX=g++
+OBJ=./build/src/mas.o ./build/src/end.o ./build/src/life.o ./build/src/Goddess_bless.o 
+OBJJ=./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/test/test.o
+LIB= -ISFML1\include -LSFML1\lib
+LDFLAGS=-Wall -Werror
+STD=-std=c++17
+SFM=-lsfml-graphics -lsfml-window -lsfml-system
+
 all:god test
 
-god: ./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/src/Goddess_bless.o 
-	g++ -std=c++11 -Wall -Werror $(DIR) -o ./bin/god -ISFML1\include -LSFML1\lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lfreetype
+god: $(OBJ)
+	$(CXX) $(STD) $(LDFLAGS) $(OBJ) -o ./bin/god $(LIB) $(SFM)
 
-test: ./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/test/test.o
-	g++ -std=c++17 -Wall -Werror -o ./bin/test ./build/src/end.o ./build/src/life.o ./build/src/mas.o ./build/test/test.o -lm
+test: $(OBJJ)
+	$(CXX) -std=c++17 $(LDFLAGS) -o ./bin/test $(OBJJ) -lm
 	./bin/test
 
 ./build/src/Goddess_bless.o: ./src/Goddess_bless.cpp	
-	g++ -std=c++17 -c ./src/Goddess_bless.cpp -o ./build/src/Goddess_bless.o -ISFML1\include -lm
+	$(CXX) $(STD) -c ./src/Goddess_bless.cpp -o ./build/src/Goddess_bless.o $(LIB) -lm
 
 ./build/src/end.o: ./src/end.cpp	
-	g++ -std=c++17 -Wall -Werror -c ./src/end.cpp -o ./build/src/end.o -lm
+	$(CXX) $(STD) $(LDFLAGS) -c ./src/end.cpp -o ./build/src/end.o -lm
 	
 ./build/src/life.o: ./src/life.cpp	
-	g++ -std=c++17 -Wall -Werror -c ./src/life.cpp -o ./build/src/life.o -lm	
+	$(CXX) $(STD) $(LDFLAGS) -c ./src/life.cpp -o ./build/src/life.o -lm	
 	
 ./build/src/mas.o: ./src/mas.cpp	
-	g++ -std=c++17 -Wall -Werror -c ./src/mas.cpp -o ./build/src/mas.o -lm
+	$(CXX) $(STD) $(LDFLAGS) -c ./src/mas.cpp -o ./build/src/mas.o -lm
 
 ./build/test/test.o: ./test/test.cpp
-	g++ -std=c++11 -c ./test/test.cpp  -o  ./build/test/test.o -ISFML1\include -LSFML1\lib -lm
+	$(CXX) $(STD) -c ./test/test.cpp  -o  ./build/test/test.o -lm
 
 clean:
 	rm -rf ./build/src/*.o ./build/test/*.o

@@ -3,10 +3,7 @@
 #include "life.hpp"
 #include "mas.hpp"
 #include <iostream>
-#include <math.h>
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <unistd.h>
 using namespace std;
 using namespace sf;
