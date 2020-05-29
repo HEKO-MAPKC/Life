@@ -105,21 +105,12 @@ void goddess_set_anim(
         RenderWindow& window)
 {
     switch (num_anim) {
-    case 1:
+    case 2:
         set_text_arr(
                 "Greatings Anon!",
                 "I am the computer Goddess",
-                "and I bless this PC",
-                "",
-                window,
-                text_box);
-        break;
-    case 2:
-        set_text_arr(
                 "And I give you this world.",
                 "Give him a life!",
-                "",
-                "",
                 window,
                 text_box);
         break;
@@ -209,7 +200,7 @@ int main()
     setlocale(LC_ALL, "Russian");
     bool isMove = false, world_started = 0;
     int n = 400, day_num = 0, coord_num = 10, delay_t = 50000, startX = 700,
-        startY = 50, tilesize = 8, num_scene = 2;
+        startY = 50, tilesize = 16, num_scene = 2;
     int pos_j, pos_i;
     string* coord_world;
     coord_world = new string[coord_num];
@@ -228,7 +219,7 @@ int main()
             world_after[i][j] = 0;
         }
     }
-    n = 100;
+    n = 50;
     get_coordinates(world_after, coord_world[day_num % (coord_num)], n);
     sprite_class fon, goddess, planet, box, day_box, yan;
     fon.init_sprite(0, 0, "./sprite/fon.png");
@@ -311,6 +302,7 @@ int main()
                         if (!world_started)
                             world_started = 1;
                         goddess.set_anim_frame(522, 0, 522, 919, 0);
+                        day_num = 0;
                     }
                     if (event.key.code == Keyboard::R) {
                         goddess_set_anim(4, goddess, text_box, window);
@@ -401,7 +393,6 @@ int main()
                         goddess_set_anim(7, goddess, text_box, window);
                     else
                         goddess_set_anim(8, goddess, text_box, window);
-                    day_num = 0;
                     world_started = 0;
                     null_compare_coord(coord_world, coord_num);
                     get_coordinates(
@@ -434,7 +425,6 @@ int main()
             textsp.set_text("Goddess", window);
             goddess_set_anim(1, goddess, text_box, window);
             window.display();
-            usleep(30000000);
             goddess_set_anim(2, goddess, text_box, window);
             fon.sprite_draw(window);
             planet.sprite_draw(window);

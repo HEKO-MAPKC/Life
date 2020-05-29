@@ -134,7 +134,7 @@ TEST_CASE("Num_life are computed", "[num_life]")
     REQUIRE(num_life(b, n, 0, 0) == 0);
 }
 
-TEST_CASE("Сopy_mas are computed", "[copy_mas]")
+TEST_CASE("Copy_mas are computed", "[copy_mas]")
 {
     const int n = 1;
     int** a;
